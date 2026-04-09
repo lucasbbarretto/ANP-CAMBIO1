@@ -49,9 +49,8 @@ MOEDA = {
 }
 
 def get_cat(ncm):
-    ncm = str(ncm)
     for cat, ncms in CAT_MAP.items():
-        if ncm in ncms:
+        if str(ncm) in ncms:
             return cat
     return "Outros"
 
@@ -69,113 +68,108 @@ def download_excel(year):
     path = f"/tmp/desembaraco-{year}.xlsx"
     with open(path, "wb") as f:
         f.write(r.content)
-    print(f"  Salvo em {path} ({len(r.content)//1024} KB)")
+    print(f"  Salvo: {len(r.content)//1024} KB")
     return path
+
+def find_header_row(df_raw):
+    keywords = ["importador", "cnpj", "ncm", "quilos", "pais", "unidade", "produto", "origem"]
+    for i, row in df_raw.iterrows():
+        row_str = " ".join(str(v).lower() for v in row.values)
+        hits = sum(1 for k in keywords if k in row_str)
+        if hits >= 2:
+            print(f"  Cabecalho na linha {i} ({hits} hits): {list(row.values)}")
+            return i
+    return None
 
 def parse_excel(path):
     xl = pd.ExcelFile(path)
-    print(f"  Abas encontradas: {xl.sheet_names}")
-    df = xl.parse(xl.sheet_names[0])
+    sheet = xl.sheet_names[0]
+    print(f"  Aba: {sheet}")
+
+    df_raw = xl.parse(sheet, header=None)
+    header_row = find_header_row(df_raw)
+
+    if header_row is None:
+        print("  Tentando varredura por linha com CNPJ...")
+        for i, row in df_raw.iterrows():
+            row_str = " ".join(str(v).lower() for v in row.values)
+            if "cnpj" in row_str:
+                header_row = i
+                print(f"  Cabecalho (CNPJ) na linha {i}")
+                break
+
+    if header_row is None:
+        header_row = 5
+        print(f"  Usando linha padrao: {header_row}")
+
+    df = xl.parse(sheet, header=header_row)
     df.columns = [str(c).strip() for c in df.columns]
     print(f"  Colunas: {list(df.columns)}")
-    print(f"  Shape: {df.shape}")
 
     col_map = {}
     for col in df.columns:
-        c = col.lower()
-        if any(x in c for x in ["importador", "razão", "empresa", "nome"]):
-            col_map["empresa"] = col
-        elif "cnpj" in c:
-            col_map["cnpj"] = col
-        elif "ncm" in c:
-            col_map["ncm"] = col
-        elif any(x in c for x in ["quilos", "kg", "quantidade", "peso"]):
-            col_map["kg"] = col
-        elif any(x in c for x in ["país", "pais", "origem"]):
-            col_map["pais"] = col
-        elif any(x in c for x in ["unidade", "ua", "adm", "porto", "despacho"]):
-            col_map["ua"] = col
-        elif any(x in c for x in ["mês", "mes", "referência", "referencia", "período"]):
-            col_map["mes"] = col
+        c = col.lower().strip()
+        if any(x in c for x in ["importador", "razao", "razão", "empresa"]):
+            col_map.setdefault("empresa", col)
+        if "cnpj" in c:
+            col_map.setdefault("cnpj", col)
+        if "ncm" in c and "desc" not in c and "nome" not in c:
+            col_map.setdefault("ncm", col)
+        if any(x in c for x in ["quilos", "quilo", "peso", "kg"]):
+            col_map.setdefault("kg", col)
+        if any(x in c for x in ["país orig", "pais orig", "origem", "país de origem"]):
+            col_map.setdefault("pais", col)
+        if any(x in c for x in ["unidade adm", "ua", "despacho", "porto"]):
+            col_map.setdefault("ua", col)
+        if any(x in c for x in ["mês", "mes", "período", "periodo", "referencia", "referência"]):
+            col_map.setdefault("mes", col)
 
-    print(f"  Mapeamento de colunas: {col_map}")
+    # Fallback por posição se não mapeou tudo
+    cols = list(df.columns)
+    fallbacks = {"empresa": 1, "cnpj": 2, "ncm": 3, "pais": 4, "ua": 5, "kg": 6, "mes": 7}
+    for field, pos in fallbacks.items():
+        if field not in col_map and len(cols) > pos:
+            col_map[field] = cols[pos]
+
+    print(f"  Mapeamento final: {col_map}")
 
     records = []
+    skip = {"nan", "", "none", "importador", "razão social", "razao social", "empresa"}
     for _, row in df.iterrows():
         emp = str(row.get(col_map.get("empresa", ""), "")).strip()
-        if not emp or emp.lower() in ["nan", "", "none"]:
+        if emp.lower() in skip or not emp:
             continue
-        ncm = str(row.get(col_map.get("ncm", ""), "")).strip().replace(".", "")
+
+        ncm_raw = str(row.get(col_map.get("ncm", ""), "")).strip()
+        ncm = ncm_raw.replace(".", "").replace(" ", "")
+        if len(ncm) < 6:
+            continue
+
         try:
-            kg = float(str(row.get(col_map.get("kg", ""), 0)).replace(",", "."))
+            kg = float(str(row.get(col_map.get("kg", ""), 0)).replace(",", ".").replace(" ", ""))
         except:
             kg = 0
+        if kg <= 0:
+            continue
+
         pais = str(row.get(col_map.get("pais", ""), "")).strip().upper()
-        ua = str(row.get(col_map.get("ua", ""), "")).strip().upper()
+        ua   = str(row.get(col_map.get("ua", ""), "")).strip().upper()
         cnpj = str(row.get(col_map.get("cnpj", ""), "")).strip()
-        mes = str(row.get(col_map.get("mes", ""), "")).strip()
+        mes  = str(row.get(col_map.get("mes", ""), "")).strip()
 
         records.append({
-            "empresa": emp,
-            "cnpj": cnpj,
-            "ncm": ncm,
+            "empresa": emp, "cnpj": cnpj, "ncm": ncm,
             "ncm_desc": NCM_DESC.get(ncm, f"NCM {ncm}"),
-            "categoria": get_cat(ncm),
-            "kg": kg,
-            "pais": pais,
-            "ua": ua,
-            "mes": mes,
+            "categoria": get_cat(ncm), "kg": kg,
+            "pais": pais, "ua": ua, "mes": mes,
             "moeda": MOEDA.get(pais, "USD"),
             "fx_est": fx_est(ncm, kg),
         })
 
+    print(f"  {len(records)} registros validos")
+    if records:
+        print(f"  Exemplo: {records[0]}")
     return records
-
-def aggregate(records):
-    from collections import defaultdict
-
-    by_empresa = defaultdict(lambda: {"kg": 0, "fx": 0, "ncms": set(), "paises": set(), "uas": set()})
-    by_ncm = defaultdict(lambda: {"kg": 0, "fx": 0, "empresas": set()})
-    by_pais = defaultdict(lambda: {"kg": 0, "fx": 0, "empresas": set(), "ncms": set()})
-    by_ua = defaultdict(lambda: {"kg": 0, "n": 0})
-    by_cat = defaultdict(lambda: {"kg": 0, "fx": 0})
-
-    for r in records:
-        e = r["empresa"]
-        by_empresa[e]["kg"] += r["kg"]
-        by_empresa[e]["fx"] += r["fx_est"]
-        by_empresa[e]["ncms"].add(r["ncm"])
-        by_empresa[e]["paises"].add(r["pais"])
-        by_empresa[e]["uas"].add(r["ua"])
-
-        by_ncm[r["ncm"]]["kg"] += r["kg"]
-        by_ncm[r["ncm"]]["fx"] += r["fx_est"]
-        by_ncm[r["ncm"]]["empresas"].add(e)
-
-        by_pais[r["pais"]]["kg"] += r["kg"]
-        by_pais[r["pais"]]["fx"] += r["fx_est"]
-        by_pais[r["pais"]]["empresas"].add(e)
-        by_pais[r["pais"]]["ncms"].add(r["ncm"])
-
-        by_ua[r["ua"]]["kg"] += r["kg"]
-        by_ua[r["ua"]]["n"] += 1
-
-        by_cat[r["categoria"]]["kg"] += r["kg"]
-        by_cat[r["categoria"]]["fx"] += r["fx_est"]
-
-    def sets_to_lists(d):
-        out = {}
-        for k, v in d.items():
-            out[k] = {kk: list(vv) if isinstance(vv, set) else vv for kk, vv in v.items()}
-        return out
-
-    return {
-        "by_empresa": sets_to_lists(dict(by_empresa)),
-        "by_ncm": sets_to_lists(dict(by_ncm)),
-        "by_pais": sets_to_lists(dict(by_pais)),
-        "by_ua": dict(by_ua),
-        "by_cat": dict(by_cat),
-    }
 
 def main():
     os.makedirs("data", exist_ok=True)
@@ -188,7 +182,6 @@ def main():
             if not path:
                 continue
             records = parse_excel(path)
-            print(f"  {year}: {len(records)} registros parseados")
             all_records.extend(records)
             meta["years"][year] = {
                 "records": len(records),
@@ -198,20 +191,17 @@ def main():
             }
             with open(f"data/records_{year}.json", "w", encoding="utf-8") as f:
                 json.dump(records, f, ensure_ascii=False, indent=2)
+            print(f"  {year}: {len(records)} registros salvos")
         except Exception as e:
+            import traceback
             print(f"  Erro em {year}: {e}")
+            traceback.print_exc()
             meta["years"][year] = {"error": str(e)}
-
-    if all_records:
-        agg = aggregate(all_records)
-        with open("data/aggregated.json", "w", encoding="utf-8") as f:
-            json.dump(agg, f, ensure_ascii=False, indent=2)
-        print(f"Agregado salvo: {len(all_records)} registros totais")
 
     with open("data/meta.json", "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
-    print(f"Concluído: {datetime.utcnow().isoformat()}")
+    print(f"Concluido: {datetime.utcnow().isoformat()} — {len(all_records)} registros totais")
 
 if __name__ == "__main__":
     main()
