@@ -338,7 +338,7 @@ function applyGlobal(){
   DATA=ALL.filter(r=>{
     if(pais&&r.pais!==pais)return false;
     if(cat&&(r.categoria||getCat(r.ncm))!==cat)return false;
-    if(ano&&!(r.mes||"").includes(ano))return false;
+    if(ano&&r.mes&&!String(r.mes).includes(ano.slice(-2)))return false;
     if(sc&&score(r.kg)!==sc)return false;
     return true;
   });
