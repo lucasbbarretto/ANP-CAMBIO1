@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-04-09T16:05:44.953736Z",
+  "updated_at": "2026-04-09T17:21:03.899334Z",
   "years": {
     "2026": {
-      "records": 0,
-      "empresas": 0,
-      "total_kg": 0,
-      "total_fx": 0
+      "records": 1792,
+      "empresas": 721,
+      "total_kg": 1655874336.5783486,
+      "total_fx": 993524593
     },
     "2025": {
-      "records": 0,
-      "empresas": 0,
-      "total_kg": 0,
-      "total_fx": 0
+      "records": 25017,
+      "empresas": 2265,
+      "total_kg": 43212399561.67389,
+      "total_fx": 25927439693
     }
   }
 }
