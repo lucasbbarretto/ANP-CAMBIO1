@@ -233,26 +233,44 @@ function score(kg){if(kg>=200e6)return"A";if(kg>=80e6)return"B";return"C";}
 function scoreBadge(kg){const s=score(kg),m={A:"b-red",B:"b-amber",C:"b-green"};return`<span class="badge ${m[s]}">Score ${s}</span>`;}
 function bar(label,val,max,color,sub){const p=max>0?Math.round(val/max*100):0;return`<div class="bar-wrap"><div class="bar-label"><span title="${label}">${label}</span><span>${sub||fK(val)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div></div>`;}
 
+function normalizeNCM(ncm){
+  // ANP usa 9 dígitos às vezes — normaliza para 8
+  const n = String(ncm).replace(/\D/g,"");
+  if(n.length===9) return n.substring(0,8);
+  return n.padStart(8,"0");
+}
+
 async function loadData(){
   const chip=document.getElementById("status-chip");
   const dateChip=document.getElementById("date-chip");
   try {
-    // Tenta carregar dados processados
-    const [meta2026, meta] = await Promise.allSettled([
-      fetch("data/records_2026.json").then(r=>r.ok?r.json():null),
-      fetch("data/meta.json").then(r=>r.ok?r.json():null)
+    const [r2026, r2025, meta] = await Promise.allSettled([
+      fetch("data/records_2026.json?t="+Date.now()).then(r=>r.ok?r.json():[]),
+      fetch("data/records_2025.json?t="+Date.now()).then(r=>r.ok?r.json():[]),
+      fetch("data/meta.json?t="+Date.now()).then(r=>r.ok?r.json():null)
     ]);
 
-    if(meta2026.status==="fulfilled" && meta2026.value){
-      ALL = meta2026.value;
-      if(meta.status==="fulfilled" && meta.value){
+    const d2026 = r2026.status==="fulfilled" ? (r2026.value||[]) : [];
+    const d2025 = r2025.status==="fulfilled" ? (r2025.value||[]) : [];
+    const combined = [...d2026, ...d2025];
+
+    if(combined.length > 0){
+      // Normaliza NCM para 8 dígitos e enriquece descrição
+      ALL = combined.map(r=>({
+        ...r,
+        ncm: normalizeNCM(r.ncm),
+        ncm_desc: NCM_D[normalizeNCM(r.ncm)] || r.ncm_desc || ("NCM "+normalizeNCM(r.ncm)),
+        categoria: getCat(normalizeNCM(r.ncm)) !== "Outros" ? getCat(normalizeNCM(r.ncm)) : (r.categoria||"Outros"),
+      }));
+
+      if(meta.status==="fulfilled" && meta.value && meta.value.updated_at){
         const u = new Date(meta.value.updated_at);
         dateChip.textContent = `Atualizado ${u.toLocaleDateString("pt-BR")} ${u.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
       }
       chip.className="chip live";
-      chip.innerHTML="● Dados reais ANP";
+      chip.innerHTML=`● Dados reais ANP (${ALL.length.toLocaleString()} registros)`;
     } else {
-      throw new Error("Dados não encontrados");
+      throw new Error("Arquivos vazios");
     }
   } catch(e) {
     console.warn("Usando dados de demonstração:", e);
