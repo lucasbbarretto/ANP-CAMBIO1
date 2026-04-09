@@ -79,6 +79,7 @@ def parse_excel(path):
     df.columns = [str(c).strip() for c in df.columns]
     print(f"  Colunas: {list(df.columns)}")
     print(f"  Shape: {df.shape}")
+
     col_map = {}
     for col in df.columns:
         c = col.lower()
@@ -96,7 +97,9 @@ def parse_excel(path):
             col_map["ua"] = col
         elif any(x in c for x in ["mês", "mes", "referência", "referencia", "período"]):
             col_map["mes"] = col
-    print(f"  Mapeamento: {col_map}")
+
+    print(f"  Mapeamento de colunas: {col_map}")
+
     records = []
     for _, row in df.iterrows():
         emp = str(row.get(col_map.get("empresa", ""), "")).strip()
@@ -111,26 +114,81 @@ def parse_excel(path):
         ua = str(row.get(col_map.get("ua", ""), "")).strip().upper()
         cnpj = str(row.get(col_map.get("cnpj", ""), "")).strip()
         mes = str(row.get(col_map.get("mes", ""), "")).strip()
+
         records.append({
-            "empresa": emp, "cnpj": cnpj, "ncm": ncm,
+            "empresa": emp,
+            "cnpj": cnpj,
+            "ncm": ncm,
             "ncm_desc": NCM_DESC.get(ncm, f"NCM {ncm}"),
-            "categoria": get_cat(ncm), "kg": kg, "pais": pais,
-            "ua": ua, "mes": mes, "moeda": MOEDA.get(pais, "USD"),
+            "categoria": get_cat(ncm),
+            "kg": kg,
+            "pais": pais,
+            "ua": ua,
+            "mes": mes,
+            "moeda": MOEDA.get(pais, "USD"),
             "fx_est": fx_est(ncm, kg),
         })
+
     return records
+
+def aggregate(records):
+    from collections import defaultdict
+
+    by_empresa = defaultdict(lambda: {"kg": 0, "fx": 0, "ncms": set(), "paises": set(), "uas": set()})
+    by_ncm = defaultdict(lambda: {"kg": 0, "fx": 0, "empresas": set()})
+    by_pais = defaultdict(lambda: {"kg": 0, "fx": 0, "empresas": set(), "ncms": set()})
+    by_ua = defaultdict(lambda: {"kg": 0, "n": 0})
+    by_cat = defaultdict(lambda: {"kg": 0, "fx": 0})
+
+    for r in records:
+        e = r["empresa"]
+        by_empresa[e]["kg"] += r["kg"]
+        by_empresa[e]["fx"] += r["fx_est"]
+        by_empresa[e]["ncms"].add(r["ncm"])
+        by_empresa[e]["paises"].add(r["pais"])
+        by_empresa[e]["uas"].add(r["ua"])
+
+        by_ncm[r["ncm"]]["kg"] += r["kg"]
+        by_ncm[r["ncm"]]["fx"] += r["fx_est"]
+        by_ncm[r["ncm"]]["empresas"].add(e)
+
+        by_pais[r["pais"]]["kg"] += r["kg"]
+        by_pais[r["pais"]]["fx"] += r["fx_est"]
+        by_pais[r["pais"]]["empresas"].add(e)
+        by_pais[r["pais"]]["ncms"].add(r["ncm"])
+
+        by_ua[r["ua"]]["kg"] += r["kg"]
+        by_ua[r["ua"]]["n"] += 1
+
+        by_cat[r["categoria"]]["kg"] += r["kg"]
+        by_cat[r["categoria"]]["fx"] += r["fx_est"]
+
+    def sets_to_lists(d):
+        out = {}
+        for k, v in d.items():
+            out[k] = {kk: list(vv) if isinstance(vv, set) else vv for kk, vv in v.items()}
+        return out
+
+    return {
+        "by_empresa": sets_to_lists(dict(by_empresa)),
+        "by_ncm": sets_to_lists(dict(by_ncm)),
+        "by_pais": sets_to_lists(dict(by_pais)),
+        "by_ua": dict(by_ua),
+        "by_cat": dict(by_cat),
+    }
 
 def main():
     os.makedirs("data", exist_ok=True)
     all_records = []
     meta = {"updated_at": datetime.utcnow().isoformat() + "Z", "years": {}}
+
     for year in ["2026", "2025"]:
         try:
             path = download_excel(year)
             if not path:
                 continue
             records = parse_excel(path)
-            print(f"  {year}: {len(records)} registros")
+            print(f"  {year}: {len(records)} registros parseados")
             all_records.extend(records)
             meta["years"][year] = {
                 "records": len(records),
@@ -143,8 +201,16 @@ def main():
         except Exception as e:
             print(f"  Erro em {year}: {e}")
             meta["years"][year] = {"error": str(e)}
+
+    if all_records:
+        agg = aggregate(all_records)
+        with open("data/aggregated.json", "w", encoding="utf-8") as f:
+            json.dump(agg, f, ensure_ascii=False, indent=2)
+        print(f"Agregado salvo: {len(all_records)} registros totais")
+
     with open("data/meta.json", "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
+
     print(f"Concluído: {datetime.utcnow().isoformat()}")
 
 if __name__ == "__main__":
