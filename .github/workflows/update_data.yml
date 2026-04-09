@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configurar Python
         uses: actions/setup-python@v5
@@ -24,17 +27,9 @@ jobs:
       - name: Baixar e processar dados da ANP
         run: python src/fetch_anp.py
 
-      - name: Verificar se há mudanças nos dados
-        id: check
-        run: |
-          git diff --quiet data/ || echo "changed=true" >> $GITHUB_OUTPUT
-
       - name: Commit e push se houver dados novos
-        if: steps.check.outputs.changed == 'true'
         run: |
           git config user.name "ANP Bot"
           git config user.email "anp-bot@noreply.github.com"
-          git pull --rebase origin main
           git add data/
-          git commit -m "Dados ANP atualizados: $(date '+%d/%m/%Y %H:%M')"
-          git push
+          git diff --staged --quiet || (git commit -m "Dados ANP atualizados: $(date '+%d/%m/%Y %H:%M')" && git push)
