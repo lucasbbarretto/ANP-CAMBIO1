@@ -1,1 +1,17 @@
-{"note":"placeholder","updated_at":null,"years":{}}
+{
+  "updated_at": "2026-04-09T16:05:44.953736Z",
+  "years": {
+    "2026": {
+      "records": 0,
+      "empresas": 0,
+      "total_kg": 0,
+      "total_fx": 0
+    },
+    "2025": {
+      "records": 0,
+      "empresas": 0,
+      "total_kg": 0,
+      "total_fx": 0
+    }
+  }
+}
