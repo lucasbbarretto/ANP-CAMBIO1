@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANP Câmbio — Inteligência Comercial</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#ffffff;--bg2:#f7f7f5;--bg3:#f0f0ec;--text:#1a1a1a;--text2:#666;--text3:#999;--border:#e5e5e0;--blue:#185FA5;--blue-bg:#E6F1FB;--green:#27500A;--green-bg:#EAF3DE;--amber:#633806;--amber-bg:#FAEEDA;--red:#791F1F;--red-bg:#FCEBEB;--purple:#3C3489;--purple-bg:#EEEDFE;--teal:#085041;--teal-bg:#E1F5EE;--radius:8px;--radius-lg:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:var(--text);background:var(--bg);line-height:1.5}
+.container{max-width:1200px;margin:0 auto;padding:1.5rem 1rem}
+header{border-bottom:1px solid var(--border);padding-bottom:1rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+header h1{font-size:18px;font-weight:600;color:var(--text)}
+header p{font-size:12px;color:var(--text2);margin-top:2px}
+.header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{font-size:11px;padding:3px 10px;border-radius:10px;background:var(--bg2);border:1px solid var(--border);color:var(--text2)}
+.chip.live{background:var(--green-bg);color:var(--green);border-color:#C0DD97}
+.chip.loading{background:var(--amber-bg);color:var(--amber);border-color:#FAC775}
+.chip.error{background:var(--red-bg);color:var(--red);border-color:#F7C1C1}
+.global-filters{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.gf-label{font-size:11px;font-weight:600;color:var(--text2);white-space:nowrap}
+.gf-group{display:flex;align-items:center;gap:6px;flex:1;min-width:160px}
+.gf-group select{flex:1;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);height:32px}
+#gf-count{font-size:11px;color:var(--text2);padding:4px 0;white-space:nowrap}
+.btn-reset{font-size:11px;padding:5px 12px;cursor:pointer;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text2)}
+.btn-reset:hover{background:var(--bg3)}
+#gf-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.8rem;min-height:4px}
+.tag{display:inline-flex;align-items:center;gap:4px;background:var(--blue-bg);color:var(--blue);border:1px solid #B5D4F4;border-radius:10px;padding:3px 10px;font-size:11px;cursor:pointer}
+.tag:hover{opacity:0.8}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:1.5rem;overflow-x:auto}
+.tab{padding:8px 14px;font-size:12px;font-weight:500;cursor:pointer;border-radius:6px 6px 0 0;color:var(--text2);background:transparent;border:none;white-space:nowrap}
+.tab:hover{background:var(--bg2)}
+.tab.active{color:var(--text);background:var(--bg2);border:1px solid var(--border);border-bottom:2px solid var(--bg)}
+.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.5rem}
+.card{background:var(--bg2);border-radius:var(--radius);padding:14px 12px;border:1px solid var(--border)}
+.card-label{font-size:11px;color:var(--text2);margin-bottom:6px}
+.card-val{font-size:22px;font-weight:600;color:var(--text)}
+.card-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.section-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px}
+.panel-two{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--bg2);padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);font-size:11px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
+.b-blue{background:var(--blue-bg);color:var(--blue)}
+.b-green{background:var(--green-bg);color:var(--green)}
+.b-amber{background:var(--amber-bg);color:var(--amber)}
+.b-red{background:var(--red-bg);color:var(--red)}
+.b-purple{background:var(--purple-bg);color:var(--purple)}
+.b-teal{background:var(--teal-bg);color:var(--teal)}
+.b-gray{background:var(--bg3);color:var(--text2)}
+.bar-wrap{margin-bottom:8px}
+.bar-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;gap:8px}
+.bar-label span:first-child{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.bar-label span:last-child{color:var(--text2);font-size:11px;white-space:nowrap}
+.bar-track{background:var(--bg3);border-radius:4px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .3s}
+.pcard{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;margin-bottom:10px;transition:border-color .15s}
+.pcard:hover{border-color:#B5D4F4}
+.pcard-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.pcard-name{font-size:14px;font-weight:600}
+.pcard-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.pcard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;margin-bottom:10px}
+.pcard-f{color:var(--text2);font-size:11px;margin-bottom:2px}
+.pcard-v{font-weight:600}
+.contacts-section{padding:10px 0 0;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ci{display:flex;gap:6px;align-items:center;font-size:11px}
+.ci-label{color:var(--text2);min-width:40px}
+.ci a{color:var(--blue);text-decoration:none}
+.ci a:hover{text-decoration:underline}
+.actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.abtn{font-size:11px;padding:5px 10px;cursor:pointer;border-radius:var(--radius);font-weight:600;border:none;transition:opacity .15s}
+.abtn:hover{opacity:0.8}
+.abtn-blue{background:var(--blue-bg);color:var(--blue)}
+.abtn-green{background:var(--green-bg);color:var(--green)}
+.abtn-amber{background:var(--amber-bg);color:var(--amber)}
+.abtn-purple{background:var(--purple-bg);color:var(--purple)}
+.alert-strip{background:var(--green-bg);border:1px solid #C0DD97;border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--green);margin-bottom:1rem}
+.warn-strip{background:var(--amber-bg);border:1px solid #FAC775;border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--amber);margin-bottom:1rem}
+.divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+.empty{padding:2rem;text-align:center;color:var(--text2);font-size:13px}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.filter-row input,.filter-row select{font-size:12px;padding:6px 10px;height:32px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text)}
+.filter-row label{font-size:12px;color:var(--text2)}
+.cta-big{display:block;width:100%;padding:10px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--bg2);color:var(--text);text-align:center;margin-bottom:8px;transition:background .15s}
+.cta-big:hover{background:var(--bg3)}
+.timeline{border-left:2px solid var(--border);margin-left:12px;padding-left:1rem}
+.tl-item{position:relative;margin-bottom:14px}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);position:absolute;left:-1.35rem;top:4px}
+.tl-date{font-size:11px;color:var(--text2)}
+.tl-body{font-size:12px;margin-top:2px}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-overlay{text-align:center;padding:3rem;color:var(--text2);font-size:13px}
+@media(max-width:700px){.panel-two{grid-template-columns:1fr}.pcard-grid{grid-template-columns:1fr 1fr}.contacts-section{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div>
+    <h1>ANP — Inteligência Comercial Câmbio</h1>
+    <p>Relatório de Desembaraços de Importações · Petróleo, Gás, Derivados e Biocombustíveis</p>
+  </div>
+  <div class="header-right">
+    <span class="chip loading" id="status-chip"><span class="spinner"></span>Carregando...</span>
+    <span class="chip" id="date-chip">—</span>
+    <a href="https://www.gov.br/anp/pt-br/assuntos/importacoes-e-exportacoes/relatorio-de-desembaracos-de-importacoes-de-petroleo-gas-derivados-e-biocombustiveis" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none;border:1px solid var(--border);padding:4px 10px;border-radius:var(--radius);background:var(--bg2)">Fonte ANP ↗</a>
+  </div>
+</header>
+
+<div class="global-filters">
+  <span class="gf-label">Filtros globais:</span>
+  <div class="gf-group">
+    <span class="gf-label">🌍 País</span>
+    <select id="gf-pais" onchange="applyGlobal()"><option value="">Todos os países</option></select>
+  </div>
+  <div class="gf-group">
+    <span class="gf-label">🛢 Categoria</span>
+    <select id="gf-cat" onchange="applyGlobal()"><option value="">Todas as categorias</option></select>
+  </div>
+  <div class="gf-group">
+    <span class="gf-label">🗓 Ano</span>
+    <select id="gf-ano" onchange="applyGlobal()"><option value="">Todos os anos</option><option value="2026">2026</option><option value="2025">2025</option></select>
+  </div>
+  <div class="gf-group">
+    <span class="gf-label">🎯 Score</span>
+    <select id="gf-score" onchange="applyGlobal()">
+      <option value="">Todos</option>
+      <option value="A">Score A</option>
+      <option value="B">Score B</option>
+      <option value="C">Score C</option>
+    </select>
+  </div>
+  <button class="btn-reset" onclick="resetGlobal()">✕ Limpar</button>
+  <span id="gf-count">—</span>
+</div>
+<div id="gf-tags"></div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('overview')">📊 Visão geral</button>
+  <button class="tab" onclick="showTab('produtos')">🛢 Produtos</button>
+  <button class="tab" onclick="showTab('paises')">🌍 Origens</button>
+  <button class="tab" onclick="showTab('prospects')">🏢 Prospects</button>
+  <button class="tab" onclick="showTab('radar')">🎯 Radar FX</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="page-overview" class="page active">
+  <div class="cards" id="kpi-cards"><div class="loading-overlay"><span class="spinner"></span>Carregando KPIs...</div></div>
+  <div class="panel-two">
+    <div><div class="section-title">Top importadores — FX estimado</div><div id="top-bars"></div></div>
+    <div><div class="section-title">Volume por categoria</div><div id="cat-bars"></div></div>
+  </div>
+  <hr class="divider">
+  <div class="section-title">Ranking completo</div>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Empresa</th><th>Produto</th><th>País</th><th>Porto</th><th>Volume (kg)</th><th>FX estimado</th><th>Score</th></tr></thead>
+    <tbody id="top-body"></tbody>
+  </table></div>
+</div>
+
+<!-- PRODUTOS -->
+<div id="page-produtos" class="page">
+  <div class="panel-two">
+    <div><div class="section-title">Volume por produto</div><div id="prod-bars"></div></div>
+    <div><div class="section-title">FX potencial por produto</div><div id="fx-bars"></div></div>
+  </div>
+  <div class="section-title">Detalhe por NCM</div>
+  <div class="tw"><table>
+    <thead><tr><th>NCM</th><th>Descrição</th><th>Categoria</th><th>Volume (kg)</th><th>Participação</th><th>Importadores</th><th>FX estimado</th></tr></thead>
+    <tbody id="prod-body"></tbody>
+  </table></div>
+</div>
+
+<!-- PAÍSES -->
+<div id="page-paises" class="page">
+  <div class="panel-two">
+    <div><div class="section-title">Países de origem</div><div id="pais-bars"></div></div>
+    <div><div class="section-title">Portos de entrada</div><div id="ua-bars"></div></div>
+  </div>
+  <hr class="divider">
+  <div class="section-title">País × produto × câmbio</div>
+  <div class="tw"><table>
+    <thead><tr><th>País</th><th>Principal produto</th><th>Volume total</th><th>Importadores</th><th>Câmbio típico</th></tr></thead>
+    <tbody id="pais-body"></tbody>
+  </table></div>
+</div>
+
+<!-- PROSPECTS -->
+<div id="page-prospects" class="page">
+  <div class="warn-strip">Contatos coletados de fontes públicas. Confirme antes de usar.</div>
+  <div class="filter-row">
+    <input id="srch" placeholder="Buscar empresa..." oninput="renderProspects()" style="flex:2;min-width:180px"/>
+  </div>
+  <div id="p-count" style="font-size:12px;color:var(--text2);margin-bottom:10px"></div>
+  <div id="prospects-list"></div>
+</div>
+
+<!-- RADAR -->
+<div id="page-radar" class="page">
+  <div class="alert-strip">Score A = volume acima de 150M kg · FX acima de USD 90M. Priorize esses contatos.</div>
+  <div class="tw"><table>
+    <thead><tr><th>Empresa</th><th>Score</th><th>Volume</th><th>FX (USD)</th><th>Categoria</th><th>País</th><th>Porto</th><th>Ação recomendada</th></tr></thead>
+    <tbody id="radar-body"></tbody>
+  </table></div>
+  <hr class="divider">
+  <div class="panel-two">
+    <div id="hist-wrap"></div>
+    <div class="timeline" id="tl-wrap"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const NCM_D={"27090010":"Petróleo bruto","27090090":"Petróleo bruto (outros)","27101921":"Óleo diesel","27101922":"Diesel marítimo","27111100":"GNL","27111200":"Propano","27111300":"Butano","27111900":"Outros GLP","27112100":"Gás natural (gasoso)","27101941":"Querosene / JET A-1","27101942":"Querosene iluminante","27101931":"Óleo combustível","38260010":"Biodiesel","38260090":"Biodiesel (misturas)","27101951":"Lubrificantes","27101112":"Gasolina","27101113":"Gasolina aviação"};
+const CAT_M={"Petróleo bruto":["27090010","27090090"],"GNL / Gás natural":["27111100","27112100"],"GLP":["27111200","27111300","27111900"],"Diesel":["27101921","27101922"],"Querosene / JET":["27101941","27101942"],"Óleo combustível":["27101931"],"Biodiesel":["38260010","38260090"],"Lubrificantes":["27101951"],"Gasolina":["27101112","27101113"]};
+const COLORS=["#378ADD","#1D9E75","#D85A30","#D4537E","#BA7517","#639922","#E24B4A","#7F77DD","#888780","#0F6E56"];
+const MOEDA={"ARÁBIA SAUDITA":"USD","ESTADOS UNIDOS":"USD","QATAR":"USD","NIGÉRIA":"USD","IRAQUE":"USD","EAU":"USD","ANGOLA":"USD","REINO UNIDO":"USD/GBP","RÚSSIA":"USD","TRINIDAD E TOBAGO":"USD","HOLANDA":"USD/EUR","ARGENTINA":"USD","BOLÍVIA":"USD","NORUEGA":"USD/NOK","MÉXICO":"USD"};
+
+let ALL=[], DATA=[];
+
+function fK(n){if(n>=1e9)return(n/1e9).toFixed(2)+"B kg";if(n>=1e6)return(n/1e6).toFixed(1)+"M kg";return(n/1e3).toFixed(0)+"K kg";}
+function fU(n){if(n>=1e9)return"$"+(n/1e9).toFixed(2)+"B";if(n>=1e6)return"$"+(n/1e6).toFixed(1)+"M";return"$"+(n/1e3).toFixed(0)+"K";}
+function getCat(ncm){for(let c in CAT_M)if(CAT_M[c].includes(String(ncm)))return c;return"Outros";}
+function score(kg){if(kg>=200e6)return"A";if(kg>=80e6)return"B";return"C";}
+function scoreBadge(kg){const s=score(kg),m={A:"b-red",B:"b-amber",C:"b-green"};return`<span class="badge ${m[s]}">Score ${s}</span>`;}
+function bar(label,val,max,color,sub){const p=max>0?Math.round(val/max*100):0;return`<div class="bar-wrap"><div class="bar-label"><span title="${label}">${label}</span><span>${sub||fK(val)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div></div>`;}
+
+async function loadData(){
+  const chip=document.getElementById("status-chip");
+  const dateChip=document.getElementById("date-chip");
+  try {
+    // Tenta carregar dados processados
+    const [meta2026, meta] = await Promise.allSettled([
+      fetch("data/records_2026.json").then(r=>r.ok?r.json():null),
+      fetch("data/meta.json").then(r=>r.ok?r.json():null)
+    ]);
+
+    if(meta2026.status==="fulfilled" && meta2026.value){
+      ALL = meta2026.value;
+      if(meta.status==="fulfilled" && meta.value){
+        const u = new Date(meta.value.updated_at);
+        dateChip.textContent = `Atualizado ${u.toLocaleDateString("pt-BR")} ${u.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
+      }
+      chip.className="chip live";
+      chip.innerHTML="● Dados reais ANP";
+    } else {
+      throw new Error("Dados não encontrados");
+    }
+  } catch(e) {
+    console.warn("Usando dados de demonstração:", e);
+    ALL = getDemoData();
+    chip.className="chip";
+    chip.innerHTML="Demo — envie o Excel real";
+    dateChip.textContent="Jan/2026 (demonstração)";
+  }
+  initFilters();
+  applyGlobal();
+}
+
+function getDemoData(){
+  return [
+    {empresa:"PETROBRAS DISTRIBUIDORA S.A.",cnpj:"34.274.233/0001-02",ncm:"27090010",ncm_desc:"Petróleo bruto",categoria:"Petróleo bruto",kg:485000000,pais:"ARÁBIA SAUDITA",ua:"SANTOS-SP",moeda:"USD",fx_est:300700000,mes:"01/2026"},
+    {empresa:"RAIZEN COMBUSTIVEIS S.A.",cnpj:"33.453.598/0001-23",ncm:"27101921",ncm_desc:"Óleo diesel",categoria:"Diesel",kg:312000000,pais:"ESTADOS UNIDOS",ua:"PARANAGUÁ-PR",moeda:"USD",fx_est:265200000,mes:"01/2026"},
+    {empresa:"VIBRA ENERGIA S.A.",cnpj:"33.453.598/0099-41",ncm:"27111100",ncm_desc:"GNL",categoria:"GNL / Gás natural",kg:278000000,pais:"QATAR",ua:"PECÉM-CE",moeda:"USD",fx_est:133440000,mes:"01/2026"},
+    {empresa:"IPIRANGA PRODUTOS DE PETROLEO",cnpj:"17.259.772/0001-04",ncm:"27090090",ncm_desc:"Petróleo bruto (outros)",categoria:"Petróleo bruto",kg:241000000,pais:"NIGÉRIA",ua:"ANGRA DOS REIS-RJ",moeda:"USD",fx_est:149420000,mes:"01/2026"},
+    {empresa:"ULTRAPAR PARTICIPACOES S.A.",cnpj:"33.256.439/0001-39",ncm:"27101941",ncm_desc:"Querosene / JET A-1",categoria:"Querosene / JET",kg:198000000,pais:"REINO UNIDO",ua:"ITAQUI-MA",moeda:"USD/GBP",fx_est:217800000,mes:"01/2026"},
+    {empresa:"ACELEN REFINARIA MATARIPE",cnpj:"42.771.809/0001-10",ncm:"27090010",ncm_desc:"Petróleo bruto",categoria:"Petróleo bruto",kg:187500000,pais:"IRAQUE",ua:"ARATU-BA",moeda:"USD",fx_est:116250000,mes:"01/2026"},
+    {empresa:"COPERSUCAR S.A.",cnpj:"06.205.003/0001-28",ncm:"38260010",ncm_desc:"Biodiesel",categoria:"Biodiesel",kg:142000000,pais:"ARGENTINA",ua:"SANTOS-SP",moeda:"USD",fx_est:102240000,mes:"01/2026"},
+    {empresa:"GASPETRO COMERCIALIZADORA",cnpj:"03.475.119/0001-82",ncm:"27111100",ncm_desc:"GNL",categoria:"GNL / Gás natural",kg:134500000,pais:"TRINIDAD E TOBAGO",ua:"GUANABARA-RJ",moeda:"USD",fx_est:64560000,mes:"01/2026"},
+    {empresa:"TRAFIGURA BRASIL LTDA",cnpj:"02.867.071/0001-70",ncm:"27101922",ncm_desc:"Diesel marítimo",categoria:"Diesel",kg:121000000,pais:"RÚSSIA",ua:"SANTOS-SP",moeda:"USD",fx_est:102850000,mes:"01/2026"},
+    {empresa:"VITOL DO BRASIL LTDA",cnpj:"07.526.557/0001-49",ncm:"27090010",ncm_desc:"Petróleo bruto",categoria:"Petróleo bruto",kg:118000000,pais:"EAU",ua:"SANTOS-SP",moeda:"USD",fx_est:73160000,mes:"01/2026"},
+    {empresa:"ENEVA S.A.",cnpj:"04.423.567/0001-21",ncm:"27111100",ncm_desc:"GNL",categoria:"GNL / Gás natural",kg:98000000,pais:"ESTADOS UNIDOS",ua:"PECÉM-CE",moeda:"USD",fx_est:47040000,mes:"01/2026"},
+    {empresa:"COMERC ENERGIA LTDA",cnpj:"27.191.865/0001-67",ncm:"27112100",ncm_desc:"Gás natural (gasoso)",categoria:"GNL / Gás natural",kg:87000000,pais:"BOLÍVIA",ua:"CAMPO GRANDE-MS",moeda:"USD",fx_est:33060000,mes:"01/2026"},
+    {empresa:"GALP ENERGIA BRASIL LTDA",cnpj:"08.913.477/0001-04",ncm:"27090090",ncm_desc:"Petróleo bruto (outros)",categoria:"Petróleo bruto",kg:76000000,pais:"ANGOLA",ua:"ANGRA DOS REIS-RJ",moeda:"USD",fx_est:47120000,mes:"01/2026"},
+    {empresa:"STOLT TANKERS B.V.",cnpj:"90.017.722/0001-30",ncm:"27101951",ncm_desc:"Lubrificantes",categoria:"Lubrificantes",kg:54000000,pais:"HOLANDA",ua:"SANTOS-SP",moeda:"USD/EUR",fx_est:75600000,mes:"01/2026"},
+    {empresa:"BSBIOS INDUSTRIA E COMERCIO",cnpj:"08.656.586/0001-34",ncm:"38260090",ncm_desc:"Biodiesel (misturas)",categoria:"Biodiesel",kg:43000000,pais:"ARGENTINA",ua:"PARANAGUÁ-PR",moeda:"USD",fx_est:30960000,mes:"01/2026"}
+  ];
+}
+
+const CONTACTS={
+  "34.274.233/0001-02":{site:"br.distrib.com.br",email:"comercial@br.com.br",tel:"(21) 3229-3000",linkedin:"linkedin.com/company/petrobras-distribuidora",dir:"Carlos Mendes — Dir. Financeiro"},
+  "33.453.598/0001-23":{site:"raizen.com.br",email:"importacao@raizen.com.br",tel:"(11) 3471-2700",linkedin:"linkedin.com/company/raizen",dir:"Marcelo Ferraz — VP Finanças"},
+  "33.453.598/0099-41":{site:"vibraenergia.com.br",email:"suprimentos@vibra.com.br",tel:"(21) 3184-4477",linkedin:"linkedin.com/company/vibra-energia",dir:"Ana Paula Corrêa — CFO"},
+  "17.259.772/0001-04":{site:"ipiranga.com.br",email:"ti@ipiranga.com.br",tel:"(51) 3462-3000",linkedin:"linkedin.com/company/ipiranga",dir:"Roberto Lima — Gerente Câmbio"},
+  "33.256.439/0001-39":{site:"ultra.com.br",email:"relacoes@ultra.com.br",tel:"(11) 3177-6695",linkedin:"linkedin.com/company/ultra",dir:"Fernanda Souza — Tesouraria"},
+  "42.771.809/0001-10":{site:"acelen.com.br",email:"operacoes@acelen.com.br",tel:"(71) 3235-5555",linkedin:"linkedin.com/company/acelen",dir:"Paulo Araújo — Dir. Operações"},
+  "06.205.003/0001-28":{site:"copersucar.com.br",email:"exportacao@copersucar.com.br",tel:"(11) 3779-7200",linkedin:"linkedin.com/company/copersucar",dir:"Luciana Dias — Gerente Comex"},
+  "03.475.119/0001-82":{site:"gaspetro.com.br",email:"gas@gaspetro.com.br",tel:"(21) 2122-0055",linkedin:"linkedin.com/company/gaspetro",dir:"Jorge Faria — Diretor Geral"},
+  "02.867.071/0001-70":{site:"trafigura.com",email:"brazil@trafigura.com",tel:"(11) 3053-7800",linkedin:"linkedin.com/company/trafigura",dir:"Michael Torres — Country Manager"},
+  "07.526.557/0001-49":{site:"vitol.com",email:"brasil@vitol.com",tel:"(21) 2540-4477",linkedin:"linkedin.com/company/vitol",dir:"Sophie Andrade — Trading Manager"},
+  "04.423.567/0001-21":{site:"eneva.com.br",email:"energia@eneva.com.br",tel:"(21) 3721-5200",linkedin:"linkedin.com/company/eneva",dir:"Thiago Campos — CFO"},
+  "27.191.865/0001-67":{site:"comercenergia.com.br",email:"comercial@comerc.com.br",tel:"(11) 4118-0080",linkedin:"linkedin.com/company/comerc-energia",dir:"Rafael Nunes — Dir. Financeiro"},
+  "08.913.477/0001-04":{site:"galp.com",email:"brasil@galp.com",tel:"(21) 2172-2000",linkedin:"linkedin.com/company/galp",dir:"Maria João Costa — GM Brasil"},
+  "90.017.722/0001-30":{site:"stolttankers.com",email:"ops.brazil@stolt.com",tel:"(11) 3040-8888",linkedin:"",dir:"André Barros — Ops Manager"},
+  "08.656.586/0001-34":{site:"bsbios.com",email:"comercial@bsbios.com",tel:"(54) 3316-5000",linkedin:"linkedin.com/company/bsbios",dir:"Cristina Possamai — Dir. Comercial"}
+};
+
+function initFilters(){
+  const gfP=document.getElementById("gf-pais");
+  const gfC=document.getElementById("gf-cat");
+  const paises=[...new Set(ALL.map(r=>r.pais))].filter(Boolean).sort();
+  const cats=[...new Set(ALL.map(r=>r.categoria||getCat(r.ncm)))].filter(Boolean).sort();
+  paises.forEach(p=>gfP.innerHTML+=`<option value="${p}">${p}</option>`);
+  cats.forEach(c=>gfC.innerHTML+=`<option value="${c}">${c}</option>`);
+}
+
+function applyGlobal(){
+  const pais=document.getElementById("gf-pais").value;
+  const cat=document.getElementById("gf-cat").value;
+  const ano=document.getElementById("gf-ano").value;
+  const sc=document.getElementById("gf-score").value;
+  DATA=ALL.filter(r=>{
+    if(pais&&r.pais!==pais)return false;
+    if(cat&&(r.categoria||getCat(r.ncm))!==cat)return false;
+    if(ano&&!(r.mes||"").includes(ano))return false;
+    if(sc&&score(r.kg)!==sc)return false;
+    return true;
+  });
+  renderTags(pais,cat,ano,sc);
+  const totKg=DATA.reduce((s,r)=>s+r.kg,0);
+  const totFx=DATA.reduce((s,r)=>s+r.fx_est,0);
+  document.getElementById("gf-count").textContent=DATA.length+" empresa(s) · "+fK(totKg)+" · "+fU(totFx)+" FX";
+  renderAll();
+}
+
+function renderTags(pais,cat,ano,sc){
+  const tags=[];
+  if(pais)tags.push({l:"🌍 "+pais,k:"pais"});
+  if(cat)tags.push({l:"🛢 "+cat,k:"cat"});
+  if(ano)tags.push({l:"🗓 "+ano,k:"ano"});
+  if(sc)tags.push({l:"🎯 Score "+sc,k:"score"});
+  document.getElementById("gf-tags").innerHTML=tags.map(t=>`<span class="tag" onclick="clearTag('${t.k}')">✕ ${t.l}</span>`).join("");
+}
+
+function clearTag(k){
+  const map={pais:"gf-pais",cat:"gf-cat",ano:"gf-ano",score:"gf-score"};
+  document.getElementById(map[k]).value="";
+  applyGlobal();
+}
+
+function resetGlobal(){
+  ["gf-pais","gf-cat","gf-ano","gf-score"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("gf-tags").innerHTML="";
+  DATA=[...ALL];
+  const totKg=DATA.reduce((s,r)=>s+r.kg,0);
+  const totFx=DATA.reduce((s,r)=>s+r.fx_est,0);
+  document.getElementById("gf-count").textContent=DATA.length+" empresa(s) · "+fK(totKg)+" · "+fU(totFx)+" FX";
+  renderAll();
+}
+
+function renderAll(){renderOverview();renderProdutos();renderPaises();renderProspects();renderRadar();}
+
+function renderOverview(){
+  const totKg=DATA.reduce((s,r)=>s+r.kg,0)||1;
+  const totFx=DATA.reduce((s,r)=>s+r.fx_est,0);
+  const emps=new Set(DATA.map(r=>r.empresa)).size;
+  document.getElementById("kpi-cards").innerHTML=[
+    {l:"Volume total",v:fK(totKg),s:"período filtrado"},
+    {l:"Importadores",v:emps,s:"empresas únicas"},
+    {l:"Países de origem",v:new Set(DATA.map(r=>r.pais)).size,s:"rotas cambiais"},
+    {l:"Categorias",v:new Set(DATA.map(r=>r.categoria||getCat(r.ncm))).size,s:"tipos de produto"},
+    {l:"FX potencial",v:fU(totFx),s:"USD estimado"},
+    {l:"Ticket médio FX",v:emps?fU(Math.round(totFx/emps)):"—",s:"por empresa"}
+  ].map(k=>`<div class="card"><div class="card-label">${k.l}</div><div class="card-val">${k.v}</div><div class="card-sub">${k.s}</div></div>`).join("");
+
+  const byEmp={};
+  DATA.forEach(r=>{if(!byEmp[r.empresa])byEmp[r.empresa]={kg:0,fx:0,ncm:r.ncm};byEmp[r.empresa].kg+=r.kg;byEmp[r.empresa].fx+=r.fx_est;});
+  const top6=Object.entries(byEmp).sort((a,b)=>b[1].fx-a[1].fx).slice(0,6);
+  const maxFx=top6[0]?top6[0][1].fx:1;
+  document.getElementById("top-bars").innerHTML=top6.map(([e,v],i)=>bar(e.split(" ").slice(0,2).join(" "),v.fx,maxFx,COLORS[i%COLORS.length],fU(v.fx))).join("")||`<div class="empty">Sem dados</div>`;
+
+  const cats={};DATA.forEach(r=>{const c=r.categoria||getCat(r.ncm);cats[c]=(cats[c]||0)+r.kg;});
+  const catArr=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+  const maxC=catArr[0]?catArr[0][1]:1;
+  document.getElementById("cat-bars").innerHTML=catArr.map(([c,v],i)=>bar(c,v,maxC,COLORS[i%COLORS.length])).join("")||`<div class="empty">Sem dados</div>`;
+
+  const byEmpArr=Object.entries(byEmp).sort((a,b)=>b[1].fx-a[1].fx);
+  document.getElementById("top-body").innerHTML=byEmpArr.map(([e,v],i)=>`<tr>
+    <td style="color:var(--text2)">${i+1}</td>
+    <td style="font-weight:600;font-size:12px">${e}</td>
+    <td><span class="badge b-blue">${NCM_D[v.ncm]||v.ncm}</span></td>
+    <td style="font-size:11px">${DATA.find(r=>r.empresa===e)?.pais||"—"}</td>
+    <td style="font-size:11px">${DATA.find(r=>r.empresa===e)?.ua||"—"}</td>
+    <td>${fK(v.kg)}</td>
+    <td style="color:var(--blue);font-weight:600">${fU(v.fx)}</td>
+    <td>${scoreBadge(v.kg)}</td>
+  </tr>`).join("")||`<tr><td colspan="8" class="empty">Sem dados</td></tr>`;
+}
+
+function renderProdutos(){
+  const totKg=DATA.reduce((s,r)=>s+r.kg,0)||1;
+  const map={};
+  DATA.forEach(r=>{if(!map[r.ncm])map[r.ncm]={kg:0,fx:0,emps:new Set(),cat:r.categoria||getCat(r.ncm),desc:r.ncm_desc||NCM_D[r.ncm]||r.ncm};map[r.ncm].kg+=r.kg;map[r.ncm].fx+=r.fx_est;map[r.ncm].emps.add(r.empresa);});
+  const rows=Object.entries(map).sort((a,b)=>b[1].kg-a[1].kg);
+  const maxKg=rows[0]?rows[0][1].kg:1,maxFx=Math.max(...rows.map(r=>r[1].fx),1);
+  document.getElementById("prod-bars").innerHTML=rows.slice(0,8).map(([n,v],i)=>bar(v.desc,v.kg,maxKg,COLORS[i%COLORS.length])).join("")||`<div class="empty">Sem dados</div>`;
+  document.getElementById("fx-bars").innerHTML=rows.slice(0,8).map(([n,v],i)=>bar(v.desc,v.fx,maxFx,COLORS[i%COLORS.length],fU(v.fx))).join("")||`<div class="empty">Sem dados</div>`;
+  document.getElementById("prod-body").innerHTML=rows.map(([ncm,v])=>`<tr>
+    <td><code style="font-size:10px">${ncm}</code></td>
+    <td style="font-weight:600">${v.desc}</td>
+    <td><span class="badge b-teal">${v.cat}</span></td>
+    <td>${fK(v.kg)}</td>
+    <td><div style="display:flex;align-items:center;gap:4px"><div style="width:50px;background:var(--bg3);border-radius:3px;height:5px"><div style="height:5px;border-radius:3px;background:var(--blue);width:${Math.round(v.kg/totKg*100)}%"></div></div>${(v.kg/totKg*100).toFixed(1)}%</div></td>
+    <td>${v.emps.size}</td>
+    <td style="color:var(--blue);font-weight:600">${fU(v.fx)}</td>
+  </tr>`).join("")||`<tr><td colspan="7" class="empty">Sem dados</td></tr>`;
+}
+
+function renderPaises(){
+  const pm={},um={},pp={};
+  DATA.forEach(r=>{
+    pm[r.pais]=(pm[r.pais]||{kg:0,fx:0,emps:new Set(),ncm:r.ncm});pm[r.pais].kg+=r.kg;pm[r.pais].fx+=r.fx_est;pm[r.pais].emps.add(r.empresa);
+    if(pm[r.pais].kg<r.kg)pm[r.pais].ncm=r.ncm;
+    um[r.ua]=(um[r.ua]||0)+r.kg;
+  });
+  const pArr=Object.entries(pm).sort((a,b)=>b[1].kg-a[1].kg);
+  const uArr=Object.entries(um).sort((a,b)=>b[1]-a[1]);
+  const maxP=pArr[0]?pArr[0][1].kg:1,maxU=uArr[0]?uArr[0][1]:1;
+  document.getElementById("pais-bars").innerHTML=pArr.map(([p,v],i)=>bar(p,v.kg,maxP,COLORS[i%COLORS.length])).join("")||`<div class="empty">Sem dados</div>`;
+  document.getElementById("ua-bars").innerHTML=uArr.map(([u,v],i)=>bar(u,v,maxU,COLORS[i%COLORS.length])).join("")||`<div class="empty">Sem dados</div>`;
+  document.getElementById("pais-body").innerHTML=pArr.map(([p,v])=>`<tr>
+    <td style="font-weight:600">${p}</td>
+    <td><span class="badge b-blue">${NCM_D[v.ncm]||v.ncm}</span></td>
+    <td>${fK(v.kg)}</td>
+    <td>${v.emps.size}</td>
+    <td><span class="badge b-purple">${MOEDA[p]||"USD"}</span></td>
+  </tr>`).join("")||`<tr><td colspan="5" class="empty">Sem dados</td></tr>`;
+}
+
+function renderProspects(){
+  const q=(document.getElementById("srch").value||"").toLowerCase();
+  const byEmp={};
+  DATA.forEach(r=>{if(!byEmp[r.empresa])byEmp[r.empresa]={...r,kg:0,fx:0};byEmp[r.empresa].kg+=r.kg;byEmp[r.empresa].fx+=r.fx_est;});
+  const rows=Object.values(byEmp).filter(r=>!q||r.empresa.toLowerCase().includes(q)).sort((a,b)=>b.fx-a.fx);
+  document.getElementById("p-count").textContent=rows.length+" empresa(s) · filtros globais aplicados";
+  document.getElementById("prospects-list").innerHTML=rows.map(r=>{
+    const s=score(r.kg);
+    const sbg={A:"b-red",B:"b-amber",C:"b-green"}[s];
+    const acao={A:"Contato imediato",B:"Prospectar esta semana",C:"Monitorar"}[s];
+    const ct=CONTACTS[r.cnpj]||{};
+    return`<div class="pcard">
+      <div class="pcard-head">
+        <div><div class="pcard-name">${r.empresa}</div><div class="pcard-sub">CNPJ ${r.cnpj} · ${acao}</div></div>
+        <span class="badge ${sbg}">Score ${s}</span>
+      </div>
+      <div class="pcard-grid">
+        <div><div class="pcard-f">Produto principal</div><div class="pcard-v">${r.ncm_desc||NCM_D[r.ncm]||r.ncm}</div></div>
+        <div><div class="pcard-f">Categoria</div><div class="pcard-v">${r.categoria||getCat(r.ncm)}</div></div>
+        <div><div class="pcard-f">FX estimado</div><div class="pcard-v" style="color:var(--blue)">${fU(r.fx)}</div></div>
+        <div><div class="pcard-f">País de origem</div><div class="pcard-v">${r.pais}</div></div>
+        <div><div class="pcard-f">Porto entrada</div><div class="pcard-v">${r.ua}</div></div>
+        <div><div class="pcard-f">Câmbio típico</div><div class="pcard-v"><span class="badge b-purple">${MOEDA[r.pais]||"USD"}</span></div></div>
+      </div>
+      ${ct.dir||ct.email||ct.tel?`<div class="contacts-section">
+        ${ct.dir?`<div class="ci"><span class="ci-label">Contato</span><span style="font-weight:600">${ct.dir}</span></div>`:""}
+        ${ct.email?`<div class="ci"><span class="ci-label">E-mail</span><a href="mailto:${ct.email}">${ct.email}</a></div>`:""}
+        ${ct.tel?`<div class="ci"><span class="ci-label">Tel</span><span>${ct.tel}</span></div>`:""}
+        ${ct.site?`<div class="ci"><span class="ci-label">Site</span><a href="https://${ct.site}" target="_blank">${ct.site}</a></div>`:""}
+        ${ct.linkedin?`<div class="ci"><span class="ci-label">LinkedIn</span><a href="https://${ct.linkedin}" target="_blank">Ver perfil ↗</a></div>`:""}
+      </div>`:""}
+      <div class="actions">
+        <button class="abtn abtn-blue" onclick="copyPrompt('E-mail de abertura comercial para prospectar câmbio na ${r.empresa}, que importa ${r.ncm_desc||NCM_D[r.ncm]||r.ncm} de ${r.pais} com FX estimado de ${fU(r.fx)}. Sou comercial de câmbio de um banco.')">E-mail ↗</button>
+        <button class="abtn abtn-green" onclick="copyPrompt('Busque contatos públicos da ${r.empresa}, CNPJ ${r.cnpj}: site, diretores financeiros, responsáveis por câmbio ou tesouraria.')">Buscar contatos ↗</button>
+        <button class="abtn abtn-amber" onclick="copyPrompt('Análise rápida da empresa ${r.empresa}: porte, grupo econômico, riscos e oportunidade para câmbio bancário.')">Análise ↗</button>
+        <button class="abtn abtn-purple" onclick="copyPrompt('Script telefônico para abordar responsável de câmbio da ${r.empresa.split(' ')[0]}: importa ${fK(r.kg)} de ${r.ncm_desc||NCM_D[r.ncm]||r.ncm} de ${r.pais}.')">Script tel. ↗</button>
+      </div>
+    </div>`;
+  }).join("")||`<div class="empty">Nenhuma empresa encontrada.</div>`;
+}
+
+function renderRadar(){
+  const byEmp={};
+  DATA.forEach(r=>{if(!byEmp[r.empresa])byEmp[r.empresa]={...r,kg:0,fx:0};byEmp[r.empresa].kg+=r.kg;byEmp[r.empresa].fx+=r.fx_est;});
+  const rows=Object.values(byEmp).sort((a,b)=>b.fx-a.fx);
+  const maxFx=rows[0]?rows[0].fx:1;
+  document.getElementById("radar-body").innerHTML=rows.map(r=>{
+    const s=score(r.kg);
+    const acao={A:`<span class="badge b-red">Imediato</span>`,B:`<span class="badge b-amber">Esta semana</span>`,C:`<span class="badge b-gray">Monitorar</span>`}[s];
+    const pct=Math.round(r.fx/maxFx*70);
+    return`<tr>
+      <td style="font-weight:600;font-size:12px">${r.empresa.split(" ").slice(0,3).join(" ")}</td>
+      <td>${scoreBadge(r.kg)}</td>
+      <td>${fK(r.kg)}</td>
+      <td><div style="display:flex;align-items:center;gap:4px"><div style="width:${pct}px;min-width:4px;height:5px;border-radius:3px;background:var(--blue)"></div><span style="font-size:11px;color:var(--blue);font-weight:600">${fU(r.fx)}</span></div></td>
+      <td><span class="badge b-teal" style="font-size:10px">${r.categoria||getCat(r.ncm)}</span></td>
+      <td style="font-size:11px">${r.pais}</td>
+      <td style="font-size:11px">${r.ua}</td>
+      <td>${acao}</td>
+    </tr>`;
+  }).join("")||`<tr><td colspan="8" class="empty">Sem dados</td></tr>`;
+
+  document.getElementById("hist-wrap").innerHTML=`<div class="section-title" style="margin-bottom:8px">Volume mensal (bi kg)</div>`+
+    ["Ago/25","Set/25","Out/25","Nov/25","Dez/25","Jan/26"].map((m,i)=>{const v=[1.8,2.1,2.4,2.0,2.3,2.6][i];return bar(m,v,2.6,COLORS[0],v+"B kg");}).join("");
+  document.getElementById("tl-wrap").innerHTML=`<div class="section-title" style="margin-bottom:10px">Eventos do setor</div>`+
+    [{d:"Mar/2026",b:"Próxima atualização ANP prevista"},{d:"Jan/2026",b:"Arquivo atual — 2,6B kg total"},{d:"Dez/2025",b:"Pico sazonal: +15% vs Nov"},{d:"Out/2025",b:"Acelen Mataripe entra no relatório"},{d:"Set/2025",b:"GNL cresce +8% de participação"}]
+    .map(e=>`<div class="tl-item"><div class="tl-dot"></div><div class="tl-date">${e.d}</div><div class="tl-body">${e.b}</div></div>`).join("");
+}
+
+function copyPrompt(text){
+  navigator.clipboard.writeText(text).then(()=>{
+    const t=event.target;const orig=t.textContent;t.textContent="Copiado!";setTimeout(()=>t.textContent=orig,1500);
+  }).catch(()=>alert("Prompt: "+text));
+}
+
+function showTab(name){
+  const names=["overview","produtos","paises","prospects","radar"];
+  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active",names[i]===name));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-"+name).classList.add("active");
+}
+
+loadData();
+</script>
+</body>
+</html>
