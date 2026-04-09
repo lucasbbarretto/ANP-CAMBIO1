@@ -1,0 +1,35 @@
+name: ANP
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install requests pandas openpyxl
+
+      - run: python src/fetch_anp.py
+
+      - name: Push dados
+        run: |
+          git config user.name "ANP Bot"
+          git config user.email "anp-bot@noreply.github.com"
+          git add data/
+          git diff --staged --quiet && echo "Sem mudancas" && exit 0
+          git commit -m "Dados ANP atualizados: $(date '+%d/%m/%Y %H:%M')"
+          git push --force origin HEAD:main
