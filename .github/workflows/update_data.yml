@@ -34,5 +34,6 @@ jobs:
           git add data/
           git diff --staged --quiet && echo "Sem mudancas" && exit 0
           git commit -m "Dados ANP atualizados: $(date '+%d/%m/%Y %H:%M')"
-          git pull --rebase origin main || true
+          git fetch origin main
+          git rebase origin/main
           git push origin main
