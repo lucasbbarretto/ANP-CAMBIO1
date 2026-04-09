@@ -10,11 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do repositório
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+
+      - name: Git pull antes de tudo
+        run: git pull origin main
 
       - name: Configurar Python
         uses: actions/setup-python@v5
@@ -34,6 +38,4 @@ jobs:
           git add data/
           git diff --staged --quiet && echo "Sem mudancas" && exit 0
           git commit -m "Dados ANP atualizados: $(date '+%d/%m/%Y %H:%M')"
-          git fetch origin
-          git rebase origin/main
-          git push origin HEAD:main
+          git push origin main
