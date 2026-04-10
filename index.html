@@ -252,7 +252,7 @@ async function loadData(){
 
     const d2026 = r2026.status==="fulfilled" ? (r2026.value||[]) : [];
     const d2025 = r2025.status==="fulfilled" ? (r2025.value||[]) : [];
-    const combined = [...d2026, ...d2025];
+    const combined = [...d2026.map(r=>({...r,_ano:"2026"})), ...d2025.map(r=>({...r,_ano:"2025"}))];
 
     if(combined.length > 0){
       // Normaliza NCM para 8 dígitos e enriquece descrição
@@ -338,7 +338,7 @@ function applyGlobal(){
   DATA=ALL.filter(r=>{
     if(pais&&r.pais!==pais)return false;
     if(cat&&(r.categoria||getCat(r.ncm))!==cat)return false;
-    if(ano&&r.mes&&!String(r.mes).includes(ano.slice(-2)))return false;
+    if(ano&&r._ano&&r._ano!==ano)return false;
     if(sc&&score(r.kg)!==sc)return false;
     return true;
   });
