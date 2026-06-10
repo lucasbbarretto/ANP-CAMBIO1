@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-09T12:05:34.648202Z",
+  "updated_at": "2026-06-10T12:21:57.909338Z",
   "years": {
     "2026": {
       "error": "HTTPSConnectionPool(host='www.gov.br', port=443): Max retries exceeded with url: /anp/pt-br/assuntos/importacoes-e-exportacoes/arquivos-desembaracos/desembaraco-2026.xlsx (Caused by NewConnectionError(\"HTTPSConnection(host='www.gov.br', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))"
