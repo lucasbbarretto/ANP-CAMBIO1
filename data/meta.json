@@ -1,11 +1,17 @@
 {
-  "updated_at": "2026-06-26T11:44:38.223016Z",
+  "updated_at": "2026-06-27T10:57:45.684081Z",
   "years": {
     "2026": {
-      "error": "HTTPSConnectionPool(host='www.gov.br', port=443): Max retries exceeded with url: /anp/pt-br/assuntos/importacoes-e-exportacoes/arquivos-desembaracos/desembaraco-2026.xlsx (Caused by NewConnectionError(\"HTTPSConnection(host='www.gov.br', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))"
+      "records": 8063,
+      "empresas": 1453,
+      "total_kg": 13177408427.71676,
+      "total_fx": 8697205819
     },
     "2025": {
-      "error": "HTTPSConnectionPool(host='www.gov.br', port=443): Max retries exceeded with url: /anp/pt-br/assuntos/importacoes-e-exportacoes/arquivos-desembaracos/desembaraco-2025.xlsx (Caused by NewConnectionError(\"HTTPSConnection(host='www.gov.br', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))"
+      "records": 25017,
+      "empresas": 2265,
+      "total_kg": 43212399561.67389,
+      "total_fx": 25927439693
     }
   }
 }
