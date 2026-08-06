@@ -125,8 +125,22 @@ tr:hover td{background:var(--bg2)}
     <select id="gf-cat" onchange="applyGlobal()"><option value="">Todas as categorias</option></select>
   </div>
   <div class="gf-group">
-    <span class="gf-label">🗓 Ano</span>
-    <select id="gf-ano" onchange="applyGlobal()"><option value="">Todos os anos</option><option value="2026">2026</option><option value="2025">2025</option></select>
+    span class="gf-label">📅 Mês</span>
+    <select id="gf-mes" onchange="applyGlobal()">
+      <option value="">Todos os meses</option>
+      <option value="1">Janeiro</option>
+      <option value="2">Fevereiro</option>
+      <option value="3">Março</option>
+      <option value="4">Abril</option>
+      <option value="5">Maio</option>
+      <option value="6">Junho</option>
+      <option value="7">Julho</option>
+      <option value="8">Agosto</option>
+      <option value="9">Setembro</option>
+      <option value="10">Outubro</option>
+      <option value="11">Novembro</option>
+      <option value="12">Dezembro</option>
+    </select>
   </div>
   <div class="gf-group">
     <span class="gf-label">🎯 Score</span>
@@ -335,10 +349,12 @@ function applyGlobal(){
   const cat=document.getElementById("gf-cat").value;
   const ano=document.getElementById("gf-ano").value;
   const sc=document.getElementById("gf-score").value;
+  const mes=document.getElementById("gf-mes").value;
   DATA=ALL.filter(r=>{
     if(pais&&r.pais!==pais)return false;
     if(cat&&(r.categoria||getCat(r.ncm))!==cat)return false;
     if(ano&&r._ano&&r._ano!==ano)return false;
+    if(mes&&String(r.mes)!==mes)return false;
     if(sc&&score(r.kg)!==sc)return false;
     return true;
   });
