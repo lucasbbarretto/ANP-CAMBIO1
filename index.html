@@ -16,13 +16,14 @@ header p{font-size:12px;color:var(--text2);margin-top:2px}
 .chip{font-size:11px;padding:3px 10px;border-radius:10px;background:var(--bg2);border:1px solid var(--border);color:var(--text2)}
 .chip.live{background:var(--green-bg);color:var(--green);border-color:#C0DD97}
 .chip.loading{background:var(--amber-bg);color:var(--amber);border-color:#FAC775}
-.global-filters{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:1rem;display:grid;grid-template-columns:auto repeat(3,1fr) auto auto;gap:8px;align-items:center
-.global-filters .gf-group:nth-child(4),.global-filters .gf-group:nth-child(5),.global-filters .gf-group:nth-child(6){grid-column:span 1}
-.gf-label{font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap}
-.gf-group{display:flex;align-items:center;gap:4px;flex:1;min-width:120px}
+.global-filters{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:1rem}
+.gf-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.gf-row:last-child{margin-bottom:0}
+.gf-label{font-size:11px;font-weight:600;color:var(--text2);white-space:nowrap;margin-right:2px}
+.gf-group{display:flex;align-items:center;gap:4px;flex:1;min-width:170px;max-width:260px}
 .gf-group select{flex:1;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);height:32px}
-#gf-count{font-size:11px;color:var(--text2);padding:4px 0;white-space:nowrap}
-.btn-reset{font-size:11px;padding:5px 12px;cursor:pointer;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text2)}
+.gf-info{font-size:11px;color:var(--text2);white-space:nowrap}
+.btn-reset{font-size:11px;padding:5px 12px;cursor:pointer;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text2);white-space:nowrap}
 .btn-reset:hover{background:var(--bg3)}
 #gf-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.8rem;min-height:4px}
 .tag{display:inline-flex;align-items:center;gap:4px;background:var(--blue-bg);color:var(--blue);border:1px solid #B5D4F4;border-radius:10px;padding:3px 10px;font-size:11px;cursor:pointer}
@@ -112,52 +113,54 @@ tr:hover td{background:var(--bg2)}
 </header>
 
 <div class="global-filters">
-  <span class="gf-label">Filtros globais:</span>
-  <div class="gf-group">
-    <span class="gf-label">🌍 País</span>
-    <select id="gf-pais" onchange="applyGlobal()"><option value="">Todos os países</option></select>
+  <div class="gf-row">
+    <span class="gf-label">Filtros globais:</span>
+    <div class="gf-group">
+      <span class="gf-label">🌍 País</span>
+      <select id="gf-pais" onchange="applyGlobal()"><option value="">Todos os países</option></select>
+    </div>
+    <div class="gf-group">
+      <span class="gf-label">🛢 Categoria</span>
+      <select id="gf-cat" onchange="applyGlobal()"><option value="">Todas as categorias</option></select>
+    </div>
+    <div class="gf-group">
+      <span class="gf-label">🗓 Ano</span>
+      <select id="gf-ano" onchange="applyGlobal()">
+        <option value="">Todos os anos</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+      </select>
+    </div>
+    <div class="gf-group">
+      <span class="gf-label">📅 Mês</span>
+      <select id="gf-mes" onchange="applyGlobal()">
+        <option value="">Todos os meses</option>
+        <option value="1">Janeiro</option>
+        <option value="2">Fevereiro</option>
+        <option value="3">Março</option>
+        <option value="4">Abril</option>
+        <option value="5">Maio</option>
+        <option value="6">Junho</option>
+        <option value="7">Julho</option>
+        <option value="8">Agosto</option>
+        <option value="9">Setembro</option>
+        <option value="10">Outubro</option>
+        <option value="11">Novembro</option>
+        <option value="12">Dezembro</option>
+      </select>
+    </div>
+    <div class="gf-group">
+      <span class="gf-label">🎯 Score</span>
+      <select id="gf-score" onchange="applyGlobal()">
+        <option value="">Todos</option>
+        <option value="A">Score A</option>
+        <option value="B">Score B</option>
+        <option value="C">Score C</option>
+      </select>
+    </div>
+    <button class="btn-reset" onclick="resetGlobal()">✕ Limpar</button>
+    <span class="gf-info" id="gf-count">—</span>
   </div>
-  <div class="gf-group">
-    <span class="gf-label">🛢 Categoria</span>
-    <select id="gf-cat" onchange="applyGlobal()"><option value="">Todas as categorias</option></select>
-  </div>
-  <div class="gf-group">
-    <span class="gf-label">🗓 Ano</span>
-    <select id="gf-ano" onchange="applyGlobal()">
-      <option value="">Todos os anos</option>
-      <option value="2026">2026</option>
-      <option value="2025">2025</option>
-    </select>
-  </div>
-  <div class="gf-group">
-    <span class="gf-label">📅 Mês</span>
-    <select id="gf-mes" onchange="applyGlobal()">
-      <option value="">Todos os meses</option>
-      <option value="1">Janeiro</option>
-      <option value="2">Fevereiro</option>
-      <option value="3">Março</option>
-      <option value="4">Abril</option>
-      <option value="5">Maio</option>
-      <option value="6">Junho</option>
-      <option value="7">Julho</option>
-      <option value="8">Agosto</option>
-      <option value="9">Setembro</option>
-      <option value="10">Outubro</option>
-      <option value="11">Novembro</option>
-      <option value="12">Dezembro</option>
-    </select>
-  </div>
-  <div class="gf-group">
-    <span class="gf-label">🎯 Score</span>
-    <select id="gf-score" onchange="applyGlobal()">
-      <option value="">Todos</option>
-      <option value="A">Score A</option>
-      <option value="B">Score B</option>
-      <option value="C">Score C</option>
-    </select>
-  </div>
-  <button class="btn-reset" onclick="resetGlobal()">✕ Limpar</button>
-  <span id="gf-count">—</span>
 </div>
 <div id="gf-tags"></div>
 
