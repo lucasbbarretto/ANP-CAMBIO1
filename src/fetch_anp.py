@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 import json
 import os
+import unicodedata
 from datetime import datetime
 
 URLS = {
@@ -41,12 +42,21 @@ FX_USD = {
 }
 
 MOEDA = {
-    "ARÁBIA SAUDITA": "USD", "ESTADOS UNIDOS": "USD", "QATAR": "USD",
-    "NIGÉRIA": "USD", "IRAQUE": "USD", "EAU": "USD", "ANGOLA": "USD",
-    "REINO UNIDO": "USD/GBP", "RÚSSIA": "USD", "TRINIDAD E TOBAGO": "USD",
-    "HOLANDA": "USD/EUR", "ARGENTINA": "USD", "BOLÍVIA": "USD",
-    "NORUEGA": "USD/NOK", "MÉXICO": "USD", "VENEZUELA": "USD",
+    "ARABIA SAUDITA": "USD", "ESTADOS UNIDOS": "USD", "QATAR": "USD",
+    "NIGERIA": "USD", "IRAQUE": "USD", "EAU": "USD", "ANGOLA": "USD",
+    "REINO UNIDO": "USD/GBP", "RUSSIA": "USD", "TRINIDAD E TOBAGO": "USD",
+    "HOLANDA": "USD/EUR", "ARGENTINA": "USD", "BOLIVIA": "USD",
+    "NORUEGA": "USD/NOK", "MEXICO": "USD", "VENEZUELA": "USD",
+    "KUWAIT": "USD", "LIBIA": "USD", "EQUADOR": "USD",
+    "AZERBAIJAO": "USD", "CAZAQUISTAO": "USD", "OMÃ": "USD", "OMA": "USD",
 }
+
+def normalizar(texto):
+    """Remove acentos e normaliza texto para comparação."""
+    if not texto:
+        return ""
+    txt = str(texto).strip().upper()
+    return unicodedata.normalize("NFKD", txt).encode("ASCII", "ignore").decode("ASCII")
 
 def get_cat(ncm):
     for cat, ncms in CAT_MAP.items():
@@ -74,10 +84,10 @@ def download_excel(year):
 def find_header_row(df_raw):
     keywords = ["importador", "cnpj", "ncm", "quilos", "pais", "unidade", "produto", "origem"]
     for i, row in df_raw.iterrows():
-        row_str = " ".join(str(v).lower() for v in row.values)
+        row_str = " ".join(normalizar(str(v)) for v in row.values)
         hits = sum(1 for k in keywords if k in row_str)
         if hits >= 2:
-            print(f"  Cabecalho na linha {i} ({hits} hits): {list(row.values)}")
+            print(f"  Cabeçalho na linha {i} ({hits} hits)")
             return i
     return None
 
@@ -88,19 +98,9 @@ def parse_excel(path):
 
     df_raw = xl.parse(sheet, header=None)
     header_row = find_header_row(df_raw)
-
-    if header_row is None:
-        print("  Tentando varredura por linha com CNPJ...")
-        for i, row in df_raw.iterrows():
-            row_str = " ".join(str(v).lower() for v in row.values)
-            if "cnpj" in row_str:
-                header_row = i
-                print(f"  Cabecalho (CNPJ) na linha {i}")
-                break
-
     if header_row is None:
         header_row = 5
-        print(f"  Usando linha padrao: {header_row}")
+        print(f"  Usando linha padrão: {header_row}")
 
     df = xl.parse(sheet, header=header_row)
     df.columns = [str(c).strip() for c in df.columns]
@@ -108,36 +108,35 @@ def parse_excel(path):
 
     col_map = {}
     for col in df.columns:
-        c = col.lower().strip()
-        if any(x in c for x in ["importador", "razao", "razão", "empresa"]):
+        c = normalizar(col)
+        if any(x in c for x in ["importador", "razao", "empresa"]):
             col_map.setdefault("empresa", col)
         if "cnpj" in c:
             col_map.setdefault("cnpj", col)
         if "ncm" in c and "desc" not in c and "nome" not in c:
             col_map.setdefault("ncm", col)
-        if any(x in c for x in ["quilos", "quilo", "peso", "kg"]):
+        if any(x in c for x in ["quilos", "quilo", "peso", "quantidade"]):
             col_map.setdefault("kg", col)
-        if any(x in c for x in ["país orig", "pais orig", "origem", "país de origem"]):
+        if any(x in c for x in ["pais orig", "origem", "pais de"]):
             col_map.setdefault("pais", col)
-        if any(x in c for x in ["unidade adm", "ua", "despacho", "porto"]):
+        if any(x in c for x in ["unidade adm", " ua", "despacho", "porto"]):
             col_map.setdefault("ua", col)
-        if any(x in c for x in ["mês", "mes", "período", "periodo", "referencia", "referência"]):
+        if any(x in c for x in ["mes", "periodo", "referencia"]):
             col_map.setdefault("mes", col)
 
-    # Fallback por posição se não mapeou tudo
     cols = list(df.columns)
     fallbacks = {"empresa": 1, "cnpj": 2, "ncm": 3, "pais": 4, "ua": 5, "kg": 6, "mes": 7}
     for field, pos in fallbacks.items():
         if field not in col_map and len(cols) > pos:
             col_map[field] = cols[pos]
 
-    print(f"  Mapeamento final: {col_map}")
+    print(f"  Mapeamento: {col_map}")
 
     records = []
-    skip = {"nan", "", "none", "importador", "razão social", "razao social", "empresa"}
+    skip = {"nan", "", "none", "importador", "razao social", "empresa"}
     for _, row in df.iterrows():
         emp = str(row.get(col_map.get("empresa", ""), "")).strip()
-        if emp.lower() in skip or not emp:
+        if normalizar(emp) in skip or not emp:
             continue
 
         ncm_raw = str(row.get(col_map.get("ncm", ""), "")).strip()
@@ -152,21 +151,27 @@ def parse_excel(path):
         if kg <= 0:
             continue
 
-        pais = str(row.get(col_map.get("pais", ""), "")).strip().upper()
-        ua   = str(row.get(col_map.get("ua", ""), "")).strip().upper()
+        # Normaliza país e UA para evitar duplicatas por acento
+        pais = normalizar(row.get(col_map.get("pais", ""), ""))
+        ua   = normalizar(row.get(col_map.get("ua", ""), ""))
         cnpj = str(row.get(col_map.get("cnpj", ""), "")).strip()
         mes  = str(row.get(col_map.get("mes", ""), "")).strip()
 
         records.append({
-            "empresa": emp, "cnpj": cnpj, "ncm": ncm,
+            "empresa": emp,
+            "cnpj": cnpj,
+            "ncm": ncm,
             "ncm_desc": NCM_DESC.get(ncm, f"NCM {ncm}"),
-            "categoria": get_cat(ncm), "kg": kg,
-            "pais": pais, "ua": ua, "mes": mes,
+            "categoria": get_cat(ncm),
+            "kg": kg,
+            "pais": pais,
+            "ua": ua,
+            "mes": mes,
             "moeda": MOEDA.get(pais, "USD"),
             "fx_est": fx_est(ncm, kg),
         })
 
-    print(f"  {len(records)} registros validos")
+    print(f"  {len(records)} registros válidos")
     if records:
         print(f"  Exemplo: {records[0]}")
     return records
@@ -201,7 +206,7 @@ def main():
     with open("data/meta.json", "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
-    print(f"Concluido: {datetime.utcnow().isoformat()} — {len(all_records)} registros totais")
+    print(f"Concluído: {datetime.utcnow().isoformat()} — {len(all_records)} registros totais")
 
 if __name__ == "__main__":
     main()
