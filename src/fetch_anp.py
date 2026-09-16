@@ -54,6 +54,7 @@ MOEDA = {
 }
 
 def norm(texto):
+    """Remove acentos e retorna em maiúsculo sem acentos."""
     txt = str(texto).strip().upper()
     return unicodedata.normalize("NFKD", txt).encode("ASCII", "ignore").decode("ASCII")
 
@@ -80,61 +81,47 @@ def download_excel(year):
     print(f"  Salvo: {len(r.content)//1024} KB")
     return path
 
-def find_header_row(path, sheet):
-    """Testa cada linha como cabeçalho e retorna a que produz melhor mapeamento."""
-    keywords = ["importador", "cnpj", "ncm", "quilos", "pais", "quantidade"]
-    best_row = 2
-    best_hits = 0
-
-    df_raw = pd.read_excel(path, sheet_name=sheet, header=None, nrows=10)
-    for i, row in df_raw.iterrows():
-        row_norm = " ".join(norm(str(v)) for v in row.values)
-        hits = sum(1 for k in keywords if k in row_norm)
-        print(f"  Linha {i}: {hits} hits — {list(row.values)[:5]}")
-        if hits > best_hits:
-            best_hits = hits
-            best_row = i
-
-    print(f"  Melhor cabeçalho: linha {best_row} ({best_hits} hits)")
-    return best_row
-
 def parse_excel(path):
     xl = pd.ExcelFile(path)
     sheet = xl.sheet_names[0]
     print(f"  Aba: {sheet}")
 
-    header_row = find_header_row(path, sheet)
-    df = pd.read_excel(path, sheet_name=sheet, header=header_row)
+    # O Excel da ANP tem sempre: linha 0=título, linha 1=vazia, linha 2=cabeçalho
+    # Lê com header=2 diretamente
+    df = pd.read_excel(path, sheet_name=sheet, header=2)
     df.columns = [str(c).strip() for c in df.columns]
-    print(f"  Colunas finais: {list(df.columns)}")
+    print(f"  Colunas: {list(df.columns)}")
 
-    # Mapeia colunas
+    # Mapeamento fixo baseado nos nomes reais da ANP
+    # Colunas conhecidas: 'Mês de desembaraço', 'Importador', 'CNPJ', 'UF DO CNPJ*',
+    #                     'NCM', 'Descrição NCM', 'UA Despacho', 'Pais de origem',
+    #                     'Quantidade de produto em quilos'
     col_map = {}
     for col in df.columns:
         c = norm(col)
-        if any(x in c for x in ["importador", "razao social"]):
-            col_map.setdefault("empresa", col)
-        if "cnpj" in c:
-            col_map.setdefault("cnpj", col)
-        if "ncm" in c and "desc" not in c and "nome" not in c:
-            col_map.setdefault("ncm", col)
-        if any(x in c for x in ["quilos", "quantidade de produto", "quilo"]):
-            col_map.setdefault("kg", col)
-        if any(x in c for x in ["pais de origem", "pais orig"]):
-            col_map.setdefault("pais", col)
-        if any(x in c for x in ["ua despacho", "unidade adm"]):
-            col_map.setdefault("ua", col)
-        if any(x in c for x in ["mes de desembaraco", "mes de"]):
-            col_map.setdefault("mes", col)
+        if c == "IMPORTADOR":
+            col_map["empresa"] = col
+        elif c == "CNPJ":
+            col_map["cnpj"] = col
+        elif c == "NCM":
+            col_map["ncm"] = col
+        elif "QUILOS" in c or "QUANTIDADE" in c:
+            col_map["kg"] = col
+        elif "PAIS" in c and "ORIGEM" in c:
+            col_map["pais"] = col
+        elif "UA" in c and "DESPACHO" in c:
+            col_map["ua"] = col
+        elif "MES" in c or "MÊS" in c:
+            col_map["mes"] = col
 
     print(f"  Mapeamento: {col_map}")
 
     if len(col_map) < 4:
-        print("  ERRO: mapeamento insuficiente, pulando arquivo.")
+        print(f"  ERRO: apenas {len(col_map)} colunas mapeadas. Pulando.")
         return []
 
     records = []
-    skip = {"NAN", "", "NONE", "IMPORTADOR", "RAZAO SOCIAL"}
+    skip = {"NAN", "", "NONE", "IMPORTADOR"}
 
     for _, row in df.iterrows():
         emp = str(row.get(col_map.get("empresa", ""), "")).strip()
