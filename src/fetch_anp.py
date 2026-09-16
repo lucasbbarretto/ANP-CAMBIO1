@@ -50,10 +50,10 @@ MOEDA = {
     "KUWAIT": "USD", "LIBIA": "USD", "EQUADOR": "USD",
     "AZERBAIJAO": "USD", "CAZAQUISTAO": "USD", "OMA": "USD",
     "ALEMANHA": "USD/EUR", "BELGICA": "USD/EUR", "FRANCA": "USD/EUR",
+    "COLOMBIA": "USD", "PERU": "USD", "CHILE": "USD",
 }
 
 def norm(texto):
-    """Remove acentos e normaliza para maiúsculo."""
     txt = str(texto).strip().upper()
     return unicodedata.normalize("NFKD", txt).encode("ASCII", "ignore").decode("ASCII")
 
@@ -80,90 +80,65 @@ def download_excel(year):
     print(f"  Salvo: {len(r.content)//1024} KB")
     return path
 
-def find_header_row(df_raw):
-    """Encontra linha do cabeçalho procurando por palavras-chave nas colunas."""
-    keywords = ["importador", "cnpj", "ncm", "quilos", "pais", "unidade", "origem", "quantidade"]
-    best_row = None
+def find_header_row(path, sheet):
+    """Testa cada linha como cabeçalho e retorna a que produz melhor mapeamento."""
+    keywords = ["importador", "cnpj", "ncm", "quilos", "pais", "quantidade"]
+    best_row = 2
     best_hits = 0
+
+    df_raw = pd.read_excel(path, sheet_name=sheet, header=None, nrows=10)
     for i, row in df_raw.iterrows():
-        if i > 20:  # cabeçalho sempre nas primeiras linhas
-            break
-        row_str = " ".join(norm(str(v)) for v in row.values)
-        hits = sum(1 for k in keywords if k in row_str)
+        row_norm = " ".join(norm(str(v)) for v in row.values)
+        hits = sum(1 for k in keywords if k in row_norm)
+        print(f"  Linha {i}: {hits} hits — {list(row.values)[:5]}")
         if hits > best_hits:
             best_hits = hits
             best_row = i
-    if best_row is not None and best_hits >= 2:
-        print(f"  Cabeçalho na linha {best_row} ({best_hits} hits)")
-        return best_row
-    return None
 
-def map_columns(df):
-    """Mapeia colunas pelos nomes reais da ANP."""
-    col_map = {}
-    for col in df.columns:
-        c = norm(col)
-        if any(x in c for x in ["importador", "razao social", "razao"]):
-            col_map.setdefault("empresa", col)
-        if "cnpj" in c:
-            col_map.setdefault("cnpj", col)
-        if "ncm" in c and "desc" not in c and "nome" not in c and "sigla" not in c:
-            col_map.setdefault("ncm", col)
-        if any(x in c for x in ["quilos", "quilo", "quantidade de produto"]):
-            col_map.setdefault("kg", col)
-        if any(x in c for x in ["pais de origem", "pais orig", "origem"]):
-            col_map.setdefault("pais", col)
-        if any(x in c for x in ["ua despacho", "unidade adm", "ua ", " ua"]):
-            col_map.setdefault("ua", col)
-        if any(x in c for x in ["mes de desembaraco", "mes de", "periodo", "referencia"]):
-            col_map.setdefault("mes", col)
-    return col_map
+    print(f"  Melhor cabeçalho: linha {best_row} ({best_hits} hits)")
+    return best_row
 
 def parse_excel(path):
     xl = pd.ExcelFile(path)
     sheet = xl.sheet_names[0]
     print(f"  Aba: {sheet}")
 
-    # Lê sem cabeçalho para detectar a linha correta
-    df_raw = xl.parse(sheet, header=None)
-    header_row = find_header_row(df_raw)
-
-    if header_row is None:
-        # Tenta ler com header=0 e verifica se o mapeamento faz sentido
-        print("  Tentando header=0...")
-        header_row = 0
-
-    df = xl.parse(sheet, header=header_row)
+    header_row = find_header_row(path, sheet)
+    df = pd.read_excel(path, sheet_name=sheet, header=header_row)
     df.columns = [str(c).strip() for c in df.columns]
-    print(f"  Colunas: {list(df.columns)}")
+    print(f"  Colunas finais: {list(df.columns)}")
 
-    col_map = map_columns(df)
+    # Mapeia colunas
+    col_map = {}
+    for col in df.columns:
+        c = norm(col)
+        if any(x in c for x in ["importador", "razao social"]):
+            col_map.setdefault("empresa", col)
+        if "cnpj" in c:
+            col_map.setdefault("cnpj", col)
+        if "ncm" in c and "desc" not in c and "nome" not in c:
+            col_map.setdefault("ncm", col)
+        if any(x in c for x in ["quilos", "quantidade de produto", "quilo"]):
+            col_map.setdefault("kg", col)
+        if any(x in c for x in ["pais de origem", "pais orig"]):
+            col_map.setdefault("pais", col)
+        if any(x in c for x in ["ua despacho", "unidade adm"]):
+            col_map.setdefault("ua", col)
+        if any(x in c for x in ["mes de desembaraco", "mes de"]):
+            col_map.setdefault("mes", col)
+
     print(f"  Mapeamento: {col_map}")
 
-    # Valida mapeamento mínimo
-    if "empresa" not in col_map or "ncm" not in col_map:
-        print("  AVISO: mapeamento incompleto, tentando por posição...")
-        cols = list(df.columns)
-        # Detecta posição pelo conteúdo das células
-        for ci, col in enumerate(cols):
-            sample = df[col].dropna().astype(str).head(10).tolist()
-            sample_str = " ".join(sample)
-            # CNPJ tem padrão numérico longo
-            if any(len(s.replace("/","").replace("-","").replace(".","")) >= 14 for s in sample):
-                col_map.setdefault("cnpj", col)
-            # NCM tem 8-9 dígitos
-            if any(s.replace(".","").isdigit() and 7 <= len(s.replace(".","")) <= 9 for s in sample):
-                col_map.setdefault("ncm", col)
-            # Empresa tem textos longos
-            if any(len(s) > 10 and s.replace(" ","").isalpha() for s in sample[:5]):
-                col_map.setdefault("empresa", col)
+    if len(col_map) < 4:
+        print("  ERRO: mapeamento insuficiente, pulando arquivo.")
+        return []
 
     records = []
-    skip_norms = {"NAN", "", "NONE", "IMPORTADOR", "RAZAO SOCIAL", "EMPRESA", "NOME"}
+    skip = {"NAN", "", "NONE", "IMPORTADOR", "RAZAO SOCIAL"}
 
     for _, row in df.iterrows():
         emp = str(row.get(col_map.get("empresa", ""), "")).strip()
-        if not emp or norm(emp) in skip_norms:
+        if not emp or norm(emp) in skip:
             continue
 
         ncm_raw = str(row.get(col_map.get("ncm", ""), "")).strip()
@@ -172,21 +147,16 @@ def parse_excel(path):
             continue
 
         try:
-            kg_raw = str(row.get(col_map.get("kg", ""), 0))
-            kg = float(kg_raw.replace(",", ".").replace(" ", ""))
+            kg = float(str(row.get(col_map.get("kg", ""), 0)).replace(",", ".").replace(" ", ""))
         except:
             kg = 0
         if kg <= 0:
             continue
 
-        pais_raw = str(row.get(col_map.get("pais", ""), "")).strip()
-        pais = norm(pais_raw)  # sem acento para evitar duplicatas
-
-        ua_raw = str(row.get(col_map.get("ua", ""), "")).strip()
-        ua = norm(ua_raw)
-
+        pais = norm(row.get(col_map.get("pais", ""), ""))
+        ua   = norm(row.get(col_map.get("ua", ""), ""))
         cnpj = str(row.get(col_map.get("cnpj", ""), "")).strip()
-        mes = str(row.get(col_map.get("mes", ""), "")).strip()
+        mes  = str(row.get(col_map.get("mes", ""), "")).strip()
 
         records.append({
             "empresa": emp,
