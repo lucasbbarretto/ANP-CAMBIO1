@@ -26858,19 +26858,6 @@
     "fx_est": 2400
   },
   {
-    "empresa": "***",
-    "cnpj": "80671002668",
-    "ncm": "29051100",
-    "ncm_desc": "NCM 29051100",
-    "categoria": "Outros",
-    "kg": 499460.0,
-    "pais": "CHILE",
-    "ua": "PORTO DE SANTOS",
-    "mes": "2",
-    "moeda": "USD",
-    "fx_est": 299676
-  },
-  {
     "empresa": "3M DO BRASIL LTDA",
     "cnpj": "45985371000108",
     "ncm": "27101991",
@@ -30145,6 +30132,19 @@
     "mes": "2",
     "moeda": "USD",
     "fx_est": 599179
+  },
+  {
+    "empresa": "CARAMURU ALIMENTOS S/A",
+    "cnpj": "80671002668",
+    "ncm": "29051100",
+    "ncm_desc": "NCM 29051100",
+    "categoria": "Outros",
+    "kg": 499460.0,
+    "pais": "CHILE",
+    "ua": "PORTO DE SANTOS",
+    "mes": "2",
+    "moeda": "USD",
+    "fx_est": 299676
   },
   {
     "empresa": "CARANDA PETROQUIMICA E SERVICOS LTDA",
@@ -50960,45 +50960,6 @@
     "fx_est": 636
   },
   {
-    "empresa": "***",
-    "cnpj": "80671002668",
-    "ncm": "29051100",
-    "ncm_desc": "NCM 29051100",
-    "categoria": "Outros",
-    "kg": 998920.0,
-    "pais": "CHILE",
-    "ua": "PORTO DE SANTOS",
-    "mes": "3",
-    "moeda": "USD",
-    "fx_est": 599352
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "27101999",
-    "ncm_desc": "NCM 27101999",
-    "categoria": "Outros",
-    "kg": 16.0,
-    "pais": "HOLANDA (PAISES BAIXOS)",
-    "ua": "PORTO DE SANTOS",
-    "mes": "3",
-    "moeda": "USD",
-    "fx_est": 10
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "34039120",
-    "ncm_desc": "NCM 34039120",
-    "categoria": "Outros",
-    "kg": 600.0,
-    "pais": "CANARIAS",
-    "ua": "PORTO DE SANTOS",
-    "mes": "3",
-    "moeda": "USD",
-    "fx_est": 360
-  },
-  {
     "empresa": "3 TENTOS",
     "cnpj": "94813102001737",
     "ncm": "29051100",
@@ -55313,6 +55274,19 @@
     "mes": "3",
     "moeda": "USD",
     "fx_est": 599180
+  },
+  {
+    "empresa": "CARAMURU ALIMENTOS S/A",
+    "cnpj": "80671002668",
+    "ncm": "29051100",
+    "ncm_desc": "NCM 29051100",
+    "categoria": "Outros",
+    "kg": 998920.0,
+    "pais": "CHILE",
+    "ua": "PORTO DE SANTOS",
+    "mes": "3",
+    "moeda": "USD",
+    "fx_est": 599352
   },
   {
     "empresa": "CARBONO QUIMICA LTDA",
@@ -76999,6 +76973,32 @@
     "fx_est": 498
   },
   {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "27101999",
+    "ncm_desc": "NCM 27101999",
+    "categoria": "Outros",
+    "kg": 16.0,
+    "pais": "HOLANDA (PAISES BAIXOS)",
+    "ua": "PORTO DE SANTOS",
+    "mes": "3",
+    "moeda": "USD",
+    "fx_est": 10
+  },
+  {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "34039120",
+    "ncm_desc": "NCM 34039120",
+    "categoria": "Outros",
+    "kg": 600.0,
+    "pais": "CANARIAS",
+    "ua": "PORTO DE SANTOS",
+    "mes": "3",
+    "moeda": "USD",
+    "fx_est": 360
+  },
+  {
     "empresa": "STANLEY ELECTRIC DO BRASIL LTDA.",
     "cnpj": "11187850000167",
     "ncm": "34039900",
@@ -81586,45 +81586,6 @@
     "mes": "3",
     "moeda": "USD",
     "fx_est": 1278
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 416.0,
-    "pais": "REINO UNIDO",
-    "ua": "PORTO DE SANTOS",
-    "mes": "4",
-    "moeda": "USD/GBP",
-    "fx_est": 250
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "27101999",
-    "ncm_desc": "NCM 27101999",
-    "categoria": "Outros",
-    "kg": 84.0,
-    "pais": "HOLANDA (PAISES BAIXOS)",
-    "ua": "PORTO DE SANTOS",
-    "mes": "4",
-    "moeda": "USD",
-    "fx_est": 50
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "34039120",
-    "ncm_desc": "NCM 34039120",
-    "categoria": "Outros",
-    "kg": 3600.0,
-    "pais": "CANARIAS",
-    "ua": "DRF NOVO HAMBURGO",
-    "mes": "4",
-    "moeda": "USD",
-    "fx_est": 2160
   },
   {
     "empresa": "2GETHER COMERCIAL EXPORTADORA",
@@ -105274,6 +105235,32 @@
     "fx_est": 8439317
   },
   {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "27101999",
+    "ncm_desc": "NCM 27101999",
+    "categoria": "Outros",
+    "kg": 84.0,
+    "pais": "HOLANDA (PAISES BAIXOS)",
+    "ua": "PORTO DE SANTOS",
+    "mes": "4",
+    "moeda": "USD",
+    "fx_est": 50
+  },
+  {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "34039120",
+    "ncm_desc": "NCM 34039120",
+    "categoria": "Outros",
+    "kg": 3600.0,
+    "pais": "CANARIAS",
+    "ua": "DRF NOVO HAMBURGO",
+    "mes": "4",
+    "moeda": "USD",
+    "fx_est": 2160
+  },
+  {
     "empresa": "STARNAV SERVICOS MARITIMOS LTDA.",
     "cnpj": "9078935000246",
     "ncm": "38112990",
@@ -109344,6 +109331,19 @@
   },
   {
     "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 416.0,
+    "pais": "REINO UNIDO",
+    "ua": "PORTO DE SANTOS",
+    "mes": "4",
+    "moeda": "USD/GBP",
+    "fx_est": 250
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
     "cnpj": "60857349001571",
     "ncm": "27101999",
     "ncm_desc": "NCM 27101999",
@@ -109432,32 +109432,6 @@
     "mes": "4",
     "moeda": "USD/EUR",
     "fx_est": 1
-  },
-  {
-    "empresa": "***",
-    "cnpj": "80671002668",
-    "ncm": "29051100",
-    "ncm_desc": "NCM 29051100",
-    "categoria": "Outros",
-    "kg": 996794.0,
-    "pais": "CHILE",
-    "ua": "PORTO DE SANTOS",
-    "mes": "5",
-    "moeda": "USD",
-    "fx_est": 598076
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 20.0,
-    "pais": "JAPAO",
-    "ua": "PORTO DE SANTOS",
-    "mes": "5",
-    "moeda": "USD",
-    "fx_est": 12
   },
   {
     "empresa": "3 TENTOS",
@@ -113696,6 +113670,19 @@
     "mes": "5",
     "moeda": "USD",
     "fx_est": 598484
+  },
+  {
+    "empresa": "CARAMURU ALIMENTOS S/A",
+    "cnpj": "80671002668",
+    "ncm": "29051100",
+    "ncm_desc": "NCM 29051100",
+    "categoria": "Outros",
+    "kg": 996794.0,
+    "pais": "CHILE",
+    "ua": "PORTO DE SANTOS",
+    "mes": "5",
+    "moeda": "USD",
+    "fx_est": 598076
   },
   {
     "empresa": "CARBONO QUIMICA LTDA",
@@ -138035,6 +138022,19 @@
   },
   {
     "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 20.0,
+    "pais": "JAPAO",
+    "ua": "PORTO DE SANTOS",
+    "mes": "5",
+    "moeda": "USD",
+    "fx_est": 12
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
     "cnpj": "60857349002977",
     "ncm": "34031900",
     "ncm_desc": "NCM 34031900",
@@ -138097,84 +138097,6 @@
     "mes": "5",
     "moeda": "USD/EUR",
     "fx_est": 864
-  },
-  {
-    "empresa": "********",
-    "cnpj": "33389328000443",
-    "ncm": "38190000",
-    "ncm_desc": "NCM 38190000",
-    "categoria": "Outros",
-    "kg": 105.6,
-    "pais": "CHINA",
-    "ua": "PORTO DE SANTOS",
-    "mes": "6",
-    "moeda": "USD",
-    "fx_est": 63
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 16.0,
-    "pais": "JAPAO",
-    "ua": "AEROPORTO INTERNACIONAL DE SAO PAULO/GUARULHOS",
-    "mes": "6",
-    "moeda": "USD",
-    "fx_est": 10
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 8.39124,
-    "pais": "JAPAO",
-    "ua": "PORTO DE SANTOS",
-    "mes": "6",
-    "moeda": "USD",
-    "fx_est": 5
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "34031120",
-    "ncm_desc": "NCM 34031120",
-    "categoria": "Outros",
-    "kg": 500.0,
-    "pais": "CANARIAS",
-    "ua": "PORTO DE SANTOS",
-    "mes": "6",
-    "moeda": "USD",
-    "fx_est": 300
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "34039120",
-    "ncm_desc": "NCM 34039120",
-    "categoria": "Outros",
-    "kg": 3000.0,
-    "pais": "CANARIAS",
-    "ua": "ALF - PORTO ALEGRE",
-    "mes": "6",
-    "moeda": "USD",
-    "fx_est": 1800
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "34039120",
-    "ncm_desc": "NCM 34039120",
-    "categoria": "Outros",
-    "kg": 7080.0,
-    "pais": "CANARIAS",
-    "ua": "DRF NOVO HAMBURGO",
-    "mes": "6",
-    "moeda": "USD",
-    "fx_est": 4248
   },
   {
     "empresa": "3 TENTOS",
@@ -163202,6 +163124,45 @@
     "fx_est": 68
   },
   {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "34031120",
+    "ncm_desc": "NCM 34031120",
+    "categoria": "Outros",
+    "kg": 500.0,
+    "pais": "CANARIAS",
+    "ua": "PORTO DE SANTOS",
+    "mes": "6",
+    "moeda": "USD",
+    "fx_est": 300
+  },
+  {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "34039120",
+    "ncm_desc": "NCM 34039120",
+    "categoria": "Outros",
+    "kg": 3000.0,
+    "pais": "CANARIAS",
+    "ua": "ALF - PORTO ALEGRE",
+    "mes": "6",
+    "moeda": "USD",
+    "fx_est": 1800
+  },
+  {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "34039120",
+    "ncm_desc": "NCM 34039120",
+    "categoria": "Outros",
+    "kg": 7080.0,
+    "pais": "CANARIAS",
+    "ua": "DRF NOVO HAMBURGO",
+    "mes": "6",
+    "moeda": "USD",
+    "fx_est": 4248
+  },
+  {
     "empresa": "STANLEY ELECTRIC DO BRASIL LTDA.",
     "cnpj": "11187850000167",
     "ncm": "34039900",
@@ -165449,6 +165410,19 @@
     "mes": "6",
     "moeda": "USD",
     "fx_est": 32538
+  },
+  {
+    "empresa": "TURIN TRADING IMPORTACAO E EXPORTACAO LTDA",
+    "cnpj": "33389328000443",
+    "ncm": "38190000",
+    "ncm_desc": "NCM 38190000",
+    "categoria": "Outros",
+    "kg": 105.6,
+    "pais": "CHINA",
+    "ua": "PORTO DE SANTOS",
+    "mes": "6",
+    "moeda": "USD",
+    "fx_est": 63
   },
   {
     "empresa": "TUTTI COLORI PRODUTOS QUIMICOS LTDA",
@@ -167727,6 +167701,32 @@
   },
   {
     "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 16.0,
+    "pais": "JAPAO",
+    "ua": "AEROPORTO INTERNACIONAL DE SAO PAULO/GUARULHOS",
+    "mes": "6",
+    "moeda": "USD",
+    "fx_est": 10
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 8.39124,
+    "pais": "JAPAO",
+    "ua": "PORTO DE SANTOS",
+    "mes": "6",
+    "moeda": "USD",
+    "fx_est": 5
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
     "cnpj": "60857349002977",
     "ncm": "34031900",
     "ncm_desc": "NCM 34031900",
@@ -167815,71 +167815,6 @@
     "mes": "6",
     "moeda": "USD/EUR",
     "fx_est": 6090
-  },
-  {
-    "empresa": "***",
-    "cnpj": "80671002668",
-    "ncm": "29051100",
-    "ncm_desc": "NCM 29051100",
-    "categoria": "Outros",
-    "kg": 999672.0,
-    "pais": "CHILE",
-    "ua": "PORTO DE SANTOS",
-    "mes": "7",
-    "moeda": "USD",
-    "fx_est": 599803
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 32.0,
-    "pais": "JAPAO",
-    "ua": "AEROPORTO INTERNACIONAL DE SAO PAULO/GUARULHOS",
-    "mes": "7",
-    "moeda": "USD",
-    "fx_est": 19
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 370.0,
-    "pais": "CANARIAS",
-    "ua": "PORTO DE SANTOS",
-    "mes": "7",
-    "moeda": "USD",
-    "fx_est": 222
-  },
-  {
-    "empresa": "*********",
-    "cnpj": "7312248000218",
-    "ncm": "29012200",
-    "ncm_desc": "NCM 29012200",
-    "categoria": "Outros",
-    "kg": 11040.0,
-    "pais": "CHINA",
-    "ua": "ITAJAI",
-    "mes": "7",
-    "moeda": "USD",
-    "fx_est": 6624
-  },
-  {
-    "empresa": "*********",
-    "cnpj": "28763819000200",
-    "ncm": "27101932",
-    "ncm_desc": "NCM 27101932",
-    "categoria": "Outros",
-    "kg": 3488.8,
-    "pais": "BELGICA",
-    "ua": "PORTO DE SANTOS",
-    "mes": "7",
-    "moeda": "USD/EUR",
-    "fx_est": 2093
   },
   {
     "empresa": "3 TENTOS",
@@ -172471,6 +172406,19 @@
     "fx_est": 598076
   },
   {
+    "empresa": "CARAMURU ALIMENTOS S/A",
+    "cnpj": "80671002668",
+    "ncm": "29051100",
+    "ncm_desc": "NCM 29051100",
+    "categoria": "Outros",
+    "kg": 999672.0,
+    "pais": "CHILE",
+    "ua": "PORTO DE SANTOS",
+    "mes": "7",
+    "moeda": "USD",
+    "fx_est": 599803
+  },
+  {
     "empresa": "CARBONO QUIMICA LTDA",
     "cnpj": "50611433000151",
     "ncm": "27075010",
@@ -176226,6 +176174,19 @@
     "mes": "7",
     "moeda": "USD",
     "fx_est": 164
+  },
+  {
+    "empresa": "EPIROC BRASIL COMERCIALIZACAO DE PRODUTOS E SERVICOS PARA MINERACAO E CONSTRUCAO LTDA.",
+    "cnpj": "28763819000200",
+    "ncm": "27101932",
+    "ncm_desc": "NCM 27101932",
+    "categoria": "Outros",
+    "kg": 3488.8,
+    "pais": "BELGICA",
+    "ua": "PORTO DE SANTOS",
+    "mes": "7",
+    "moeda": "USD/EUR",
+    "fx_est": 2093
   },
   {
     "empresa": "EPIROC BRASIL COMERCIALIZACAO DE PRODUTOS E SERVICOS PARA MINERACAO E CONSTRUCAO LTDA.",
@@ -191257,6 +191218,19 @@
   },
   {
     "empresa": "RLX FLUOROCHEMICAL IMPORTADORA E EXPORTADORA LTDA",
+    "cnpj": "7312248000218",
+    "ncm": "29012200",
+    "ncm_desc": "NCM 29012200",
+    "categoria": "Outros",
+    "kg": 11040.0,
+    "pais": "CHINA",
+    "ua": "ITAJAI",
+    "mes": "7",
+    "moeda": "USD",
+    "fx_est": 6624
+  },
+  {
+    "empresa": "RLX FLUOROCHEMICAL IMPORTADORA E EXPORTADORA LTDA",
     "cnpj": "7312248000307",
     "ncm": "27112910",
     "ncm_desc": "NCM 27112910",
@@ -198628,6 +198602,32 @@
   },
   {
     "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 32.0,
+    "pais": "JAPAO",
+    "ua": "AEROPORTO INTERNACIONAL DE SAO PAULO/GUARULHOS",
+    "mes": "7",
+    "moeda": "USD",
+    "fx_est": 19
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 370.0,
+    "pais": "CANARIAS",
+    "ua": "PORTO DE SANTOS",
+    "mes": "7",
+    "moeda": "USD",
+    "fx_est": 222
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
     "cnpj": "60857349002977",
     "ncm": "34031900",
     "ncm_desc": "NCM 34031900",
@@ -198677,45 +198677,6 @@
     "mes": "7",
     "moeda": "USD",
     "fx_est": 7668
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 740.0,
-    "pais": "CANARIAS",
-    "ua": "PORTO DE SANTOS",
-    "mes": "8",
-    "moeda": "USD",
-    "fx_est": 444
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 1431.99,
-    "pais": "ESTADOS UNIDOS",
-    "ua": "PORTO DE SANTOS",
-    "mes": "8",
-    "moeda": "USD",
-    "fx_est": 859
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "27101999",
-    "ncm_desc": "NCM 27101999",
-    "categoria": "Outros",
-    "kg": 36.0,
-    "pais": "HOLANDA (PAISES BAIXOS)",
-    "ua": "PORTO DE SANTOS",
-    "mes": "8",
-    "moeda": "USD",
-    "fx_est": 22
   },
   {
     "empresa": "3 TENTOS",
@@ -224835,6 +224796,19 @@
     "fx_est": 600
   },
   {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "27101999",
+    "ncm_desc": "NCM 27101999",
+    "categoria": "Outros",
+    "kg": 36.0,
+    "pais": "HOLANDA (PAISES BAIXOS)",
+    "ua": "PORTO DE SANTOS",
+    "mes": "8",
+    "moeda": "USD",
+    "fx_est": 22
+  },
+  {
     "empresa": "STANLEY ELECTRIC DO BRASIL LTDA.",
     "cnpj": "11187850000167",
     "ncm": "38140090",
@@ -229737,6 +229711,32 @@
   },
   {
     "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 740.0,
+    "pais": "CANARIAS",
+    "ua": "PORTO DE SANTOS",
+    "mes": "8",
+    "moeda": "USD",
+    "fx_est": 444
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 1431.99,
+    "pais": "ESTADOS UNIDOS",
+    "ua": "PORTO DE SANTOS",
+    "mes": "8",
+    "moeda": "USD",
+    "fx_est": 859
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
     "cnpj": "60857349001571",
     "ncm": "27101932",
     "ncm_desc": "NCM 27101932",
@@ -229773,71 +229773,6 @@
     "mes": "8",
     "moeda": "USD",
     "fx_est": 852
-  },
-  {
-    "empresa": "********",
-    "cnpj": "33389328000443",
-    "ncm": "38190000",
-    "ncm_desc": "NCM 38190000",
-    "categoria": "Outros",
-    "kg": 72.6,
-    "pais": "CHINA",
-    "ua": "PORTO DE SANTOS",
-    "mes": "9",
-    "moeda": "USD",
-    "fx_est": 44
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 740.0,
-    "pais": "CANARIAS",
-    "ua": "PORTO DE SANTOS",
-    "mes": "9",
-    "moeda": "USD",
-    "fx_est": 444
-  },
-  {
-    "empresa": "*********",
-    "cnpj": "19743521000167",
-    "ncm": "34031900",
-    "ncm_desc": "NCM 34031900",
-    "categoria": "Outros",
-    "kg": 6.31,
-    "pais": "ALEMANHA",
-    "ua": "PORTO DE SANTOS",
-    "mes": "9",
-    "moeda": "USD/EUR",
-    "fx_est": 4
-  },
-  {
-    "empresa": "*********",
-    "cnpj": "28763819000200",
-    "ncm": "27101991",
-    "ncm_desc": "NCM 27101991",
-    "categoria": "Outros",
-    "kg": 1.88,
-    "pais": "REINO UNIDO",
-    "ua": "SAO PAULO",
-    "mes": "9",
-    "moeda": "USD/GBP",
-    "fx_est": 1
-  },
-  {
-    "empresa": "*********",
-    "cnpj": "28763819000200",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 39.14,
-    "pais": "SUECIA",
-    "ua": "SAO PAULO",
-    "mes": "9",
-    "moeda": "USD",
-    "fx_est": 23
   },
   {
     "empresa": "3 TENTOS",
@@ -238457,6 +238392,32 @@
     "mes": "9",
     "moeda": "USD",
     "fx_est": 82
+  },
+  {
+    "empresa": "EPIROC BRASIL COMERCIALIZACAO DE PRODUTOS E SERVICOS PARA MINERACAO E CONSTRUCAO LTDA.",
+    "cnpj": "28763819000200",
+    "ncm": "27101991",
+    "ncm_desc": "NCM 27101991",
+    "categoria": "Outros",
+    "kg": 1.88,
+    "pais": "REINO UNIDO",
+    "ua": "SAO PAULO",
+    "mes": "9",
+    "moeda": "USD/GBP",
+    "fx_est": 1
+  },
+  {
+    "empresa": "EPIROC BRASIL COMERCIALIZACAO DE PRODUTOS E SERVICOS PARA MINERACAO E CONSTRUCAO LTDA.",
+    "cnpj": "28763819000200",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 39.14,
+    "pais": "SUECIA",
+    "ua": "SAO PAULO",
+    "mes": "9",
+    "moeda": "USD",
+    "fx_est": 23
   },
   {
     "empresa": "EPIROC BRASIL COMERCIALIZACAO DE PRODUTOS E SERVICOS PARA MINERACAO E CONSTRUCAO LTDA.",
@@ -256100,6 +256061,19 @@
     "fx_est": 11486879
   },
   {
+    "empresa": "STADLER DO BRASIL IMPORTACAO E COMERCIO LTDA.",
+    "cnpj": "19743521000167",
+    "ncm": "34031900",
+    "ncm_desc": "NCM 34031900",
+    "categoria": "Outros",
+    "kg": 6.31,
+    "pais": "ALEMANHA",
+    "ua": "PORTO DE SANTOS",
+    "mes": "9",
+    "moeda": "USD/EUR",
+    "fx_est": 4
+  },
+  {
     "empresa": "STANLEY ELECTRIC DO BRASIL LTDA.",
     "cnpj": "11187850000167",
     "ncm": "34039900",
@@ -258648,6 +258622,19 @@
     "fx_est": 220
   },
   {
+    "empresa": "TURIN TRADING IMPORTACAO E EXPORTACAO LTDA",
+    "cnpj": "33389328000443",
+    "ncm": "38190000",
+    "ncm_desc": "NCM 38190000",
+    "categoria": "Outros",
+    "kg": 72.6,
+    "pais": "CHINA",
+    "ua": "PORTO DE SANTOS",
+    "mes": "9",
+    "moeda": "USD",
+    "fx_est": 44
+  },
+  {
     "empresa": "TVC ACESSORIOS INDUSTRIAIS LTDA",
     "cnpj": "2992512000107",
     "ncm": "38140090",
@@ -260924,6 +260911,19 @@
   },
   {
     "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 740.0,
+    "pais": "CANARIAS",
+    "ua": "PORTO DE SANTOS",
+    "mes": "9",
+    "moeda": "USD",
+    "fx_est": 444
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
     "cnpj": "60857349001571",
     "ncm": "27101932",
     "ncm_desc": "NCM 27101932",
@@ -261012,71 +261012,6 @@
     "mes": "9",
     "moeda": "USD",
     "fx_est": 2556
-  },
-  {
-    "empresa": "***",
-    "cnpj": "80671002668",
-    "ncm": "29051100",
-    "ncm_desc": "NCM 29051100",
-    "categoria": "Outros",
-    "kg": 498686.0,
-    "pais": "TRINIDAD E TOBAGO",
-    "ua": "PORTO DE SANTOS",
-    "mes": "10",
-    "moeda": "USD",
-    "fx_est": 299212
-  },
-  {
-    "empresa": "********",
-    "cnpj": "19700983000369",
-    "ncm": "27101259",
-    "ncm_desc": "NCM 27101259",
-    "categoria": "Outros",
-    "kg": 8459596.0,
-    "pais": "RUSSIA",
-    "ua": "IRF - PORTO DE SUAPE",
-    "mes": "10",
-    "moeda": "USD",
-    "fx_est": 5075758
-  },
-  {
-    "empresa": "********",
-    "cnpj": "60857349000176",
-    "ncm": "34039900",
-    "ncm_desc": "NCM 34039900",
-    "categoria": "Outros",
-    "kg": 5.8321,
-    "pais": "JAPAO",
-    "ua": "PORTO DE SANTOS",
-    "mes": "10",
-    "moeda": "USD",
-    "fx_est": 3
-  },
-  {
-    "empresa": "********",
-    "cnpj": "89488316000692",
-    "ncm": "27101999",
-    "ncm_desc": "NCM 27101999",
-    "categoria": "Outros",
-    "kg": 60.0,
-    "pais": "HOLANDA (PAISES BAIXOS)",
-    "ua": "PORTO DE SANTOS",
-    "mes": "10",
-    "moeda": "USD",
-    "fx_est": 36
-  },
-  {
-    "empresa": "*********",
-    "cnpj": "7312248000218",
-    "ncm": "29011000",
-    "ncm_desc": "NCM 29011000",
-    "categoria": "Outros",
-    "kg": 36000.0,
-    "pais": "CHINA",
-    "ua": "ITAJAI",
-    "mes": "10",
-    "moeda": "USD",
-    "fx_est": 21600
   },
   {
     "empresa": "3 TENTOS",
@@ -266173,6 +266108,19 @@
     "mes": "10",
     "moeda": "USD",
     "fx_est": 598423
+  },
+  {
+    "empresa": "CARAMURU ALIMENTOS S/A",
+    "cnpj": "80671002668",
+    "ncm": "29051100",
+    "ncm_desc": "NCM 29051100",
+    "categoria": "Outros",
+    "kg": 498686.0,
+    "pais": "TRINIDAD E TOBAGO",
+    "ua": "PORTO DE SANTOS",
+    "mes": "10",
+    "moeda": "USD",
+    "fx_est": 299212
   },
   {
     "empresa": "CARBONO QUIMICA LTDA",
@@ -279149,6 +279097,19 @@
     "fx_est": 4221347
   },
   {
+    "empresa": "MIDAS DISTRIBUIDORA DE COMBUSTIVEIS S.A.",
+    "cnpj": "19700983000369",
+    "ncm": "27101259",
+    "ncm_desc": "NCM 27101259",
+    "categoria": "Outros",
+    "kg": 8459596.0,
+    "pais": "RUSSIA",
+    "ua": "IRF - PORTO DE SUAPE",
+    "mes": "10",
+    "moeda": "USD",
+    "fx_est": 5075758
+  },
+  {
     "empresa": "MIDDLEBY DO BRASIL LTDA",
     "cnpj": "3697325000244",
     "ncm": "27101931",
@@ -283959,6 +283920,19 @@
     "fx_est": 1029
   },
   {
+    "empresa": "RLX FLUOROCHEMICAL IMPORTADORA E EXPORTADORA LTDA",
+    "cnpj": "7312248000218",
+    "ncm": "29011000",
+    "ncm_desc": "NCM 29011000",
+    "categoria": "Outros",
+    "kg": 36000.0,
+    "pais": "CHINA",
+    "ua": "ITAJAI",
+    "mes": "10",
+    "moeda": "USD",
+    "fx_est": 21600
+  },
+  {
     "empresa": "ROBERT BOSCH DIRECAO AUTOMOTIVA LTDA",
     "cnpj": "1930685000138",
     "ncm": "34039900",
@@ -286791,6 +286765,19 @@
     "mes": "10",
     "moeda": "USD/GBP",
     "fx_est": 43
+  },
+  {
+    "empresa": "STAHL BRASIL SA",
+    "cnpj": "89488316000692",
+    "ncm": "27101999",
+    "ncm_desc": "NCM 27101999",
+    "categoria": "Outros",
+    "kg": 60.0,
+    "pais": "HOLANDA (PAISES BAIXOS)",
+    "ua": "PORTO DE SANTOS",
+    "mes": "10",
+    "moeda": "USD",
+    "fx_est": 36
   },
   {
     "empresa": "STANLEY ELECTRIC DO BRASIL LTDA.",
@@ -291744,6 +291731,19 @@
     "mes": "10",
     "moeda": "USD",
     "fx_est": 540
+  },
+  {
+    "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
+    "cnpj": "60857349000176",
+    "ncm": "34039900",
+    "ncm_desc": "NCM 34039900",
+    "categoria": "Outros",
+    "kg": 5.8321,
+    "pais": "JAPAO",
+    "ua": "PORTO DE SANTOS",
+    "mes": "10",
+    "moeda": "USD",
+    "fx_est": 3
   },
   {
     "empresa": "ZF AUTOMOTIVE BRASIL LTDA.",
