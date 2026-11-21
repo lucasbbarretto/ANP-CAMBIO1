@@ -1,17 +1,11 @@
 {
-  "updated_at": "2026-11-20T17:35:02.575420Z",
+  "updated_at": "2026-11-21T16:37:51.312337Z",
   "years": {
     "2026": {
-      "records": 22448,
-      "empresas": 2664,
-      "total_kg": 35389153997.897194,
-      "total_fx": 23421560627
+      "error": "('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
     },
     "2025": {
-      "records": 25017,
-      "empresas": 2265,
-      "total_kg": 43212399561.67389,
-      "total_fx": 25927439693
+      "error": "('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
     }
   }
 }
