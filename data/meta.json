@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-24T19:59:00.509388Z",
+  "updated_at": "2026-11-25T18:59:22.113587Z",
   "years": {
     "2026": {
       "error": "('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
